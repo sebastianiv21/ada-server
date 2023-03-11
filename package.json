@@ -1,0 +1,36 @@
+{
+  "name": "ada-server",
+  "version": "1.0.0",
+  "description": "Backend part from ADA Health App",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install",
+    "release": "standard-version",
+    "release:minor": "standard-version --release-as minor",
+    "release:patch": "standard-version --release-as patch",
+    "release:major": "standard-version --release-as major"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sebastianiv21/ada-server.git"
+  },
+  "keywords": [],
+  "author": "sebastianiv21",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sebastianiv21/ada-server/issues"
+  },
+  "homepage": "https://github.com/sebastianiv21/ada-server#readme",
+  "devDependencies": {
+    "@commitlint/cli": "^17.4.4",
+    "@commitlint/config-conventional": "^17.4.4",
+    "eslint": "^8.36.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.2.0",
+    "prettier": "^2.8.4",
+    "standard-version": "^9.5.0"
+  }
+}
