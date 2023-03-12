@@ -2,9 +2,10 @@
   "name": "ada-server",
   "version": "1.0.0",
   "description": "Backend part from ADA Health App",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "nodemon server.js",
     "prepare": "husky install",
     "release": "standard-version",
     "release:minor": "standard-version --release-as minor",
@@ -30,7 +31,11 @@
     "eslint-plugin-import": "^2.27.5",
     "husky": "^8.0.0",
     "lint-staged": "^13.2.0",
+    "nodemon": "^2.0.21",
     "prettier": "^2.8.4",
     "standard-version": "^9.5.0"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
   }
 }
