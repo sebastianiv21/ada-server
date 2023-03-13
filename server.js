@@ -9,6 +9,8 @@ const errorHandler = require('./middleware/errorHandler');
 const PORT = process.env.PORT || 3500;
 const app = express();
 
+app.disable('x-powered-by');
+
 app.use(logger);
 
 app.use(cors(corsOptions));
