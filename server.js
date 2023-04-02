@@ -27,6 +27,7 @@ app.use(express.json()); // Lets us use JSON
 app.use(cookieParser()); // Lets us use cookies
 
 app.use('/', require('./routes/root'));
+app.use('/users', require('./routes/usersRoutes'));
 
 app.all('*', (req, res) => {
   res.status(404);
