@@ -18,13 +18,13 @@ connectDB();
 
 app.disable('x-powered-by');
 
-app.use(logger);
+app.use(logger); // middleware que registra los eventos
 
-app.use(cors(corsOptions));
+app.use(cors(corsOptions)); // nos permite usar CORS
 
-app.use(express.json()); // Lets us use JSON
+app.use(express.json()); // nos permite usar JSON
 
-app.use(cookieParser()); // Lets us use cookies
+app.use(cookieParser()); // nos permite usar cookies
 
 app.use('/', require('./routes/root'));
 app.use('/users', require('./routes/usersRoutes'));
@@ -40,7 +40,7 @@ app.all('*', (req, res) => {
   }
 });
 
-app.use(errorHandler);
+app.use(errorHandler); // middleware que maneja los errores
 
 mongoose.connection.once('open', () => {
   console.log('Connected to MongoDB');
