@@ -3,80 +3,60 @@ const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const Test = require('../models/Test');
 
-// @route   GET /users
-// @desc    Get all users
-// @access  Private
-/*
-  Devuelve la información de los usuarios excepto la contraseña.
-  El método 'lean()' sirve para traer sólo el json y no incluir otra información
-  y métodos que contiene el llamado a users. Se usa sólo para consultas ya
-  que si se quiere guardar un registro, se debe evitar usarlo
-*/
+// Campos requeridos para un usuario
+const requiredFields = [
+  'idType',
+  'idNumber',
+  'name',
+  'lastname',
+  'dateOfBirth',
+  'gender',
+  'bloodType',
+  'rh',
+  'eps',
+  'email',
+  'personalPhone',
+  'password',
+];
+
+/**
+ * @route   GET /users
+ * @desc    Get all users
+ * @access  Private
+ * Devuelve la información de los usuarios excepto la contraseña.
+ * El método 'lean()' sirve para traer sólo el json y no incluir otra información
+ * y métodos que contiene el llamado a users. Se usa sólo para consultas ya
+ * que si se quiere guardar un registro, se debe evitar usarlo
+ */
 const getAllUsers = asyncHandler(async (req, res) => {
-  const users = await User.find().select('-password').lean();
+  const users = await User.find().select('-password').lean(); // '-password' para no traer la contraseña
 
   if (!users?.length) {
-    return res.status(400).json({ message: 'No se encontraron usuarios' });
+    res.status(400).json({ message: 'No se encontraron usuarios' });
   }
 
   return res.json(users);
 });
 
-// @route   POST /users
-// @desc    Create a new user
-// @access  Private
-/*
-  Con req.body se desestructura la información enviada del cliente para crear un usuario.
-  No se envían ni role ni active porque se asignan por defecto
-*/
+/**
+ * @route   POST /users
+ * @desc    Create a new user
+ * @access  Private
+ * Con req.body se desestructura la información enviada del cliente para crear un usuario.
+ * No se envían ni role ni active porque se asignan por defecto
+ */
 const createUser = asyncHandler(async (req, res) => {
-  // const {
-  //   idType,
-  //   idNumber,
-  //   name,
-  //   lastname,
-  //   dateOfBirth,
-  //   gender,
-  //   bloodType,
-  //   rh,
-  //   maritalStatus,
-  //   eps,
-  //   personalPhone,
-  //   personalPhone2,
-  //   address,
-  //   city,
-  //   department,
-  //   email,
-  //   password,
-  //   contactName,
-  //   contactLastname,
-  //   contactRelationship,
-  //   contactPhone,
-  // } = req.body;
-
   // Confirma que existan los campos requeridos
   const {
-    idNumber, password, name, lastname,
+    idNumber, password, name, lastname, roles,
   } = req.body;
 
-  const requiredFields = [
-    'idType',
-    'idNumber',
-    'name',
-    'lastname',
-    'dateOfBirth',
-    'gender',
-    'bloodType',
-    'rh',
-    'eps',
-    'email',
-    'personalPhone',
-    'password',
-  ];
+  // Si alguno de los campos requeridos no existe, retorna true
+  const isMissingRequiredField = requiredFields.some(
+    (field) => !req.body[field],
+  );
 
-  const hasAllRequiredFields = requiredFields.every((field) => Boolean(req.body[field]));
-
-  if (!hasAllRequiredFields) {
+  if (isMissingRequiredField || !Array.isArray(roles) || !roles.length) {
     return res.status(400).json({ message: 'Ingrese los campos requeridos' });
   }
 
@@ -84,9 +64,7 @@ const createUser = asyncHandler(async (req, res) => {
   // Se usa el método 'exec()' porque estamos pasando un párametro al método 'findOne()'
   const duplicate = await User.findOne({ idNumber }).lean().exec();
 
-  if (duplicate) {
-    return res.status(409).json({ message: 'El usuario ya existe' });
-  }
+  if (duplicate) res.status(409).json({ message: 'El usuario ya existe' }); // 409 Conflict
 
   // Cifra la contraseña
   const hashedPwd = await bcrypt.hash(password, 10); // salt rounds
@@ -106,20 +84,20 @@ const createUser = asyncHandler(async (req, res) => {
   // Usuario creado
   return res
     .status(201)
-    .json({ message: `Nuevo usuario ${name} ${lastname} creado` });
+    .json({ message: `Nuevo usuario ${name} ${lastname} registrado` });
 });
 
-// @route   PATCH /users/:id
-// @desc    Update a user
-// @access  Private
+/**
+ * @route   PATCH /users/:id
+ * @desc    Update a user
+ * @access  Private
+ */
 const updateUser = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
   // Confirma que el usuario a actualizar exista
   const userToUpdate = await User.findById(id).exec();
-  if (!userToUpdate) {
-    return res.status(400).json({ message: 'Usuario no encontrado' });
-  }
+  if (!userToUpdate) res.status(400).json({ message: 'Usuario no encontrado' });
 
   const {
     idType,
@@ -137,7 +115,7 @@ const updateUser = asyncHandler(async (req, res) => {
     address,
     city,
     department,
-    role,
+    roles,
     active,
     email,
     password,
@@ -147,23 +125,14 @@ const updateUser = asyncHandler(async (req, res) => {
     contactPhone,
   } = req.body;
 
-  const allowedRoles = ['Paciente', 'Personal Médico', 'Administrador'];
-
-  const isInvalidRole = !allowedRoles.includes(role);
+  const isMissingRequiredField = requiredFields.some(
+    (field) => !req.body[field],
+  );
 
   if (
-    !idType
-    || !idNumber
-    || !name
-    || !lastname
-    || !dateOfBirth
-    || !gender
-    || !bloodType
-    || !rh
-    || !eps
-    || !personalPhone
-    || !email
-    || isInvalidRole
+    isMissingRequiredField
+    || !Array.isArray(roles)
+    || !roles.length
     || typeof active !== 'boolean'
   ) {
     return res.status(400).json({ message: 'Ingrese los campos requeridos' });
@@ -194,7 +163,7 @@ const updateUser = asyncHandler(async (req, res) => {
   userToUpdate.address = address;
   userToUpdate.city = city;
   userToUpdate.department = department;
-  userToUpdate.role = role;
+  userToUpdate.roles = roles;
   userToUpdate.active = active;
   userToUpdate.email = email;
   userToUpdate.contactName = contactName;
@@ -207,6 +176,7 @@ const updateUser = asyncHandler(async (req, res) => {
     userToUpdate.password = await bcrypt.hash(password, 10); // salt rounds
   }
 
+  // Guarda el usuario actualizado
   const updatedUser = await userToUpdate.save();
 
   return res.json({
@@ -214,16 +184,20 @@ const updateUser = asyncHandler(async (req, res) => {
   });
 });
 
-// @route   DELETE /users
-// @desc    Delete a user
-// @access  Private
+/**
+ * @route   DELETE /users/:id
+ * @desc    Delete a user
+ * @access  Private
+ */
 const deleteUser = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  if (!id) {
-    // bad request
-    return res.status(400).json({ message: 'Se require ID del usuario' });
-  }
+  // 400 bad request
+  if (!id) res.status(400).json({ message: 'Se require ID del usuario' });
+
+  // Confirma que el usuario exista
+  const userToDelete = await User.findById(id).exec();
+  if (!userToDelete) res.status(400).json({ message: 'Usuario no encontrado' });
 
   // Confirma que el usuario no tenga pruebas asignadas
   const testFromUser = await Test.findOne({ user: id }).lean().exec();
@@ -233,19 +207,12 @@ const deleteUser = asyncHandler(async (req, res) => {
       .json({ message: 'El usuario tiene pruebas asignadas' });
   }
 
-  // Confirma que el usuario exista
-  const userToDelete = await User.findById(id).exec();
-
-  if (!userToDelete) {
-    return res.status(400).json({ message: 'Usuario no encontrado' });
-  }
-
   // Elimina el usuario
   const result = await userToDelete.deleteOne();
 
-  const reply = `Usuario ${result.name} ${result.lastname} con número de identificación ${result.idNumber} eliminado`;
+  const message = `Usuario ${result.name} ${result.lastname} con número de identificación ${result.idNumber} eliminado`;
 
-  return res.json(reply);
+  return res.json(message);
 });
 
 module.exports = {

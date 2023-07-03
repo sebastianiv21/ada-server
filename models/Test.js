@@ -12,9 +12,13 @@ const testSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    status: {
+      type: String,
+      default: 'Solicitado', // 'Solicitado', 'Muestra recolectada', 'Procesado'
+    },
   },
   {
-    timestamps: true,
+    timestamps: true, // Crea campos createdAt y updatedAt
   },
 );
 
