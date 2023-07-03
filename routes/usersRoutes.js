@@ -1,3 +1,7 @@
+/**
+ * @descripcion: Archivo de rutas para el controlador de usuarios
+ */
+
 const express = require('express');
 const usersController = require('../controllers/usersController');
 
@@ -6,7 +10,9 @@ const router = express.Router();
 router
   .route('/')
   .get(usersController.getAllUsers)
-  .post(usersController.createUser)
+  .post(usersController.createUser);
+router
+  .route('/:id')
   .patch(usersController.updateUser)
   .delete(usersController.deleteUser);
 

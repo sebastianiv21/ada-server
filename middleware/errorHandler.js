@@ -15,7 +15,10 @@ const errorHandler = (err, req, res) => {
   console.error(stack); // muestra el error en consola
 
   const statusCode = res.statusCode ? res.statusCode : 500; // server error
-  res.status(statusCode).json({ message }); // envía el error al cliente
+
+  res.status(statusCode);
+
+  res.json({ message }); // envía el error al cliente
 };
 
 module.exports = errorHandler;
