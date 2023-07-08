@@ -21,7 +21,7 @@ const requiredFields = [
 
 /**
  * @route   GET /users
- * @desc    Get all users
+ * @desc    Trae todos los usuarios
  * @access  Private
  * Devuelve la información de los usuarios excepto la contraseña.
  * El método 'lean()' sirve para traer sólo el json y no incluir otra información
@@ -40,7 +40,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
 
 /**
  * @route   POST /users
- * @desc    Create a new user
+ * @desc    Crea un usuario nuevo
  * @access  Private
  * Con req.body se desestructura la información enviada del cliente para crear un usuario.
  * No se envían ni role ni active porque se asignan por defecto
@@ -89,7 +89,7 @@ const createUser = asyncHandler(async (req, res) => {
 
 /**
  * @route   PATCH /users/:id
- * @desc    Update a user
+ * @desc    Actualiza un usuario por ID
  * @access  Private
  */
 const updateUser = asyncHandler(async (req, res) => {
@@ -186,7 +186,7 @@ const updateUser = asyncHandler(async (req, res) => {
 
 /**
  * @route   DELETE /users/:id
- * @desc    Delete a user
+ * @desc    Elimina un usuario por ID
  * @access  Private
  */
 const deleteUser = asyncHandler(async (req, res) => {

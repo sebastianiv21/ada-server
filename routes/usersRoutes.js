@@ -1,7 +1,3 @@
-/**
- * @descripcion: Archivo de rutas para el controlador de usuarios
- */
-
 const express = require('express');
 const usersController = require('../controllers/usersController');
 
