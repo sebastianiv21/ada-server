@@ -19,15 +19,13 @@ connectDB();
 app.disable('x-powered-by');
 
 app.use(logger); // middleware que registra los eventos
-
-app.use(cors(corsOptions)); // nos permite usar CORS
-
+app.use(cors(corsOptions)); // nos permite usar CORS con las opciones configuradas
 app.use(express.json()); // nos permite usar JSON
-
 app.use(cookieParser()); // nos permite usar cookies
 
 app.use('/', require('./routes/root'));
 app.use('/users', require('./routes/usersRoutes'));
+app.use('/places', require('./routes/placeRoutes'));
 
 app.all('*', (req, res) => {
   res.status(404);
