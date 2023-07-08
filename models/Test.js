@@ -8,6 +8,11 @@ const testSchema = mongoose.Schema(
       required: true,
       ref: 'User',
     },
+    name: {
+      // i.e: 'Adenosina en sangre'
+      type: String,
+      required: true,
+    },
     result: {
       type: String,
       required: true,
@@ -16,6 +21,8 @@ const testSchema = mongoose.Schema(
       type: String,
       default: 'Solicitado', // 'Solicitado', 'Muestra recolectada', 'Procesado'
     },
+    recommendations: String, // i.e: 'No comer 12 horas antes'
+    referenceValues: String, // i.e: '0.5 - 1.5 mg/dL'
   },
   {
     timestamps: true, // Crea campos createdAt y updatedAt
