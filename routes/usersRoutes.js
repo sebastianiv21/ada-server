@@ -11,5 +11,6 @@ router
   .route('/:id')
   .patch(usersController.updateUser)
   .delete(usersController.deleteUser);
+router.post('/create-admin', usersController.createAdmin);
 
 module.exports = router;

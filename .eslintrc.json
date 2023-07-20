@@ -17,6 +17,8 @@
       }
     ],
     "linebreak-style": "off",
-    "no-underscore-dangle": "off"
+    "no-underscore-dangle": "off",
+    "object-curly-newline": "off",
+    "operator-linebreak": ["error", "after"]
   }
 }
