@@ -2,6 +2,7 @@ const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const Test = require('../models/Test');
+const ROLES_LIST = require('../config/rolesList');
 
 // Campos requeridos para un usuario
 const requiredFields = [
@@ -47,9 +48,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
  */
 const createUser = asyncHandler(async (req, res) => {
   // Confirma que existan los campos requeridos
-  const {
-    idNumber, password, name, lastname, roles,
-  } = req.body;
+  const { idNumber, email, password, name, lastname, roles } = req.body;
 
   // Si alguno de los campos requeridos no existe, retorna true
   const isMissingRequiredField = requiredFields.some(
@@ -62,7 +61,9 @@ const createUser = asyncHandler(async (req, res) => {
 
   // Confirma que el usuario no exista
   // Se usa el método 'exec()' porque estamos pasando un párametro al método 'findOne()'
-  const duplicate = await User.findOne({ idNumber }).lean().exec();
+  const duplicate = await User.findOne({ $or: [{ idNumber }, { email }] })
+    .lean()
+    .exec();
 
   if (duplicate) res.status(409).json({ message: 'El usuario ya existe' }); // 409 Conflict
 
@@ -77,9 +78,7 @@ const createUser = asyncHandler(async (req, res) => {
 
   const user = await User.create(userObject);
 
-  if (!user) {
-    return res.status(400).json({ message: 'Datos de usuario inválidos' });
-  }
+  if (!user) res.status(400).json({ message: 'Datos de usuario inválidos' });
 
   // Usuario creado
   return res
@@ -130,10 +129,10 @@ const updateUser = asyncHandler(async (req, res) => {
   );
 
   if (
-    isMissingRequiredField
-    || !Array.isArray(roles)
-    || !roles.length
-    || typeof active !== 'boolean'
+    isMissingRequiredField ||
+    !Array.isArray(roles) ||
+    !roles.length ||
+    typeof active !== 'boolean'
   ) {
     return res.status(400).json({ message: 'Ingrese los campos requeridos' });
   }
@@ -215,9 +214,64 @@ const deleteUser = asyncHandler(async (req, res) => {
   return res.json(message);
 });
 
+/**
+ * @route   POST /users/create-admin
+ * @desc    Crea un usuario administrador
+ */
+const createAdmin = asyncHandler(async (req, res) => {
+  // search for admin
+  const admin = await User.findOne({
+    roles: { $elemMatch: { $eq: ROLES_LIST.ADMIN } },
+  })
+    .lean()
+    .exec();
+
+  if (admin) res.status(409).json({ message: 'Ya existe un administrador' }); // 409 Conflict
+
+  const { idNumber, email, password, roles } = req.body;
+
+  // Si alguno de los campos requeridos no existe, retorna true
+  const isMissingRequiredField = requiredFields.some(
+    (field) => !req.body[field],
+  );
+
+  if (isMissingRequiredField || !Array.isArray(roles) || !roles.length) {
+    return res.status(400).json({ message: 'Ingrese los campos requeridos' });
+  }
+
+  if (!roles.includes(ROLES_LIST.ADMIN)) {
+    return res.status(400).json({ message: 'El rol debe ser administrador' });
+  }
+
+  // Confirma que el usuario no exista
+  // Se usa el método 'exec()' porque estamos pasando un párametro al método 'findOne()'
+  const duplicate = await User.findOne({ $or: [{ idNumber }, { email }] })
+    .lean()
+    .exec();
+
+  if (duplicate) res.status(409).json({ message: 'El usuario ya existe' }); // 409 Conflict
+
+  // Cifra la contraseña
+  const hashedPwd = await bcrypt.hash(password, 10); // salt rounds
+
+  // Crea el usuario
+  const userObject = {
+    ...req.body,
+    password: hashedPwd,
+  };
+
+  const user = await User.create(userObject);
+
+  if (!user) res.status(400).json({ message: 'Datos de usuario inválidos' });
+
+  // Administrador creado
+  return res.status(201).json({ message: 'Nuevo administrador registrado' });
+});
+
 module.exports = {
   getAllUsers,
   createUser,
   updateUser,
   deleteUser,
+  createAdmin,
 };
