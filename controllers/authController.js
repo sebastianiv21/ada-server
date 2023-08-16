@@ -1,6 +1,5 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const asyncHandler = require('express-async-handler');
 const User = require('../models/User');
 
 // tiempo de expiracion de los tokens
@@ -15,7 +14,7 @@ const EXPIRATION_TIME = Object.freeze({
  * @route   POST /auth
  * @access  Public
  */
-const login = asyncHandler(async (req, res) => {
+const login = async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -62,14 +61,14 @@ const login = asyncHandler(async (req, res) => {
 
   // envia accessToken
   res.status(200).json({ accessToken });
-});
+};
 
 /**
  * @desc    Refresh
  * @route   GET /auth/refresh
  * @access  Public - porque el token ha expirado
  */
-const refresh = asyncHandler(async (req, res) => {
+const refresh = async (req, res) => {
   const { cookies } = req;
 
   if (!cookies?.jwt) return res.status(401).json({ message: 'No autorizado' });
@@ -80,7 +79,7 @@ const refresh = asyncHandler(async (req, res) => {
   jwt.verify(
     refreshToken,
     process.env.REFRESH_TOKEN_SECRET,
-    asyncHandler(async (err, decoded) => {
+    async (err, decoded) => {
       if (err) return res.status(403).json({ message: 'No autorizado' });
 
       const foundUser = await User.findOne({ email: decoded.email }).exec();
@@ -101,23 +100,23 @@ const refresh = asyncHandler(async (req, res) => {
 
       // envia accessToken
       res.status(200).json({ accessToken });
-    }),
+    },
   );
-});
+};
 
 /**
  * @desc    Logout user
  * @route   POST /auth/logout
  * @access  Public - limpia la cookie si existe
  */
-const logout = asyncHandler(async (req, res) => {
+const logout = async (req, res) => {
   const { cookies } = req;
 
   if (!cookies?.jwt) return res.sendStatus(204); // no hay cookie
 
   res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
   res.status(200).json({ message: 'Cookie eliminada' });
-});
+};
 
 module.exports = {
   login,

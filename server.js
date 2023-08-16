@@ -1,4 +1,5 @@
 require('dotenv').config(); // Load .env file (if exists)
+require('express-async-errors'); // nos permite usar async/await en los middlewares sin necesidad de usar try/catch
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');

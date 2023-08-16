@@ -1,4 +1,3 @@
-const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const Test = require('../models/Test');
@@ -29,7 +28,7 @@ const requiredFields = [
  * y métodos que contiene el llamado a users. Se usa sólo para consultas ya
  * que si se quiere guardar un registro, se debe evitar usarlo
  */
-const getAllUsers = asyncHandler(async (req, res) => {
+const getAllUsers = async (req, res) => {
   const users = await User.find().select('-password').lean(); // '-password' para no traer la contraseña
 
   if (!users?.length) {
@@ -37,7 +36,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
   }
 
   return res.json(users);
-});
+};
 
 /**
  * @route   POST /users
@@ -46,7 +45,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
  * Con req.body se desestructura la información enviada del cliente para crear un usuario.
  * No se envían ni role ni active porque se asignan por defecto
  */
-const createUser = asyncHandler(async (req, res) => {
+const createUser = async (req, res) => {
   // Confirma que existan los campos requeridos
   const { idNumber, email, password, name, lastname, roles } = req.body;
 
@@ -62,6 +61,11 @@ const createUser = asyncHandler(async (req, res) => {
   // Confirma que el usuario no exista
   // Se usa el método 'exec()' porque estamos pasando un párametro al método 'findOne()'
   const duplicate = await User.findOne({ $or: [{ idNumber }, { email }] })
+    .collation({
+      // para que no sea sensible a mayúsculas y minúsculas
+      locale: 'es',
+      strength: 2,
+    })
     .lean()
     .exec();
 
@@ -84,14 +88,14 @@ const createUser = asyncHandler(async (req, res) => {
   return res
     .status(201)
     .json({ message: `Nuevo usuario ${name} ${lastname} registrado` });
-});
+};
 
 /**
  * @route   PATCH /users/:id
  * @desc    Actualiza un usuario por ID
  * @access  Private
  */
-const updateUser = asyncHandler(async (req, res) => {
+const updateUser = async (req, res) => {
   const { id } = req.params;
 
   // Confirma que el usuario a actualizar exista
@@ -181,14 +185,14 @@ const updateUser = asyncHandler(async (req, res) => {
   return res.json({
     message: `Perfil de ${updatedUser.name} ${updatedUser.lastname} actualizado`,
   });
-});
+};
 
 /**
  * @route   DELETE /users/:id
  * @desc    Elimina un usuario por ID
  * @access  Private
  */
-const deleteUser = asyncHandler(async (req, res) => {
+const deleteUser = async (req, res) => {
   const { id } = req.params;
 
   // 400 bad request
@@ -212,13 +216,13 @@ const deleteUser = asyncHandler(async (req, res) => {
   const message = `Usuario ${result.name} ${result.lastname} con número de identificación ${result.idNumber} eliminado`;
 
   return res.json(message);
-});
+};
 
 /**
  * @route   POST /users/create-admin
  * @desc    Crea un usuario administrador
  */
-const createAdmin = asyncHandler(async (req, res) => {
+const createAdmin = async (req, res) => {
   // search for admin
   const admin = await User.findOne({
     roles: { $elemMatch: { $eq: ROLES_LIST.ADMIN } },
@@ -246,6 +250,10 @@ const createAdmin = asyncHandler(async (req, res) => {
   // Confirma que el usuario no exista
   // Se usa el método 'exec()' porque estamos pasando un párametro al método 'findOne()'
   const duplicate = await User.findOne({ $or: [{ idNumber }, { email }] })
+    .collation({
+      locale: 'es',
+      strength: 2,
+    })
     .lean()
     .exec();
 
@@ -266,7 +274,7 @@ const createAdmin = asyncHandler(async (req, res) => {
 
   // Administrador creado
   return res.status(201).json({ message: 'Nuevo administrador registrado' });
-});
+};
 
 module.exports = {
   getAllUsers,

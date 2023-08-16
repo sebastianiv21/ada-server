@@ -1,4 +1,3 @@
-const asyncHandler = require('express-async-handler');
 const Place = require('../models/Place');
 
 /**
@@ -7,7 +6,7 @@ const Place = require('../models/Place');
  * @access  Private
  * Devuelve la lista de departamentos de Colombia
  */
-const getAllDepartamentos = asyncHandler(async (req, res) => {
+const getAllDepartamentos = async (req, res) => {
   // Se usa aggregate para hacer un group by y traer sólo un departamento por id
   const departamentos = await Place.aggregate([
     {
@@ -18,7 +17,7 @@ const getAllDepartamentos = asyncHandler(async (req, res) => {
     },
   ]);
   res.json(departamentos);
-});
+};
 
 /**
  * @route   GET /places/:departamento
@@ -26,13 +25,13 @@ const getAllDepartamentos = asyncHandler(async (req, res) => {
  * @access  Private
  * Devuelve la lista de municipios de un departamento de Colombia
  */
-const getMunicipiosByDepartamento = asyncHandler(async (req, res) => {
+const getMunicipiosByDepartamento = async (req, res) => {
   const municipios = await Place.find(
     { departamento: req.params.departamento },
     'idMunicipio municipio',
   ).exec();
   res.json(municipios);
-});
+};
 
 module.exports = {
   getAllDepartamentos,

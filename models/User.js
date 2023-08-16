@@ -58,13 +58,13 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
     // Información de la sesión
-    roles: [
+    roles:
       // Roles de usuario (paciente, médico, administrador o personal clínico)
       {
-        type: Number,
+        type: [Number],
         required: true,
       },
-    ],
+
     active: {
       type: Boolean,
       default: true,
