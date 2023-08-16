@@ -24,6 +24,7 @@ app.use(express.json()); // nos permite usar JSON
 app.use(cookieParser()); // nos permite usar cookies
 
 app.use('/', require('./routes/root'));
+app.use('/auth', require('./routes/authRoutes'));
 app.use('/users', require('./routes/usersRoutes'));
 app.use('/places', require('./routes/placeRoutes'));
 
@@ -46,9 +47,7 @@ mongoose.connection.once('open', () => {
 });
 
 mongoose.connection.on('error', (err) => {
-  const {
-    no, code, syscall, hostname,
-  } = err;
+  const { no, code, syscall, hostname } = err;
 
   const errorLogFileName = 'mongoErrLog.log';
   console.log('Error connecting to MongoDB', err);
