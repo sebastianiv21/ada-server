@@ -20,6 +20,7 @@
     "no-underscore-dangle": "off",
     "object-curly-newline": "off",
     "operator-linebreak": ["error", "after"],
-    "no-unused-vars": "warn"
+    "no-unused-vars": "warn",
+    "consistent-return": "off"
   }
 }
