@@ -21,6 +21,21 @@ const requiredFields = [
 
 const jsonWithMessage = (res, message, code = 400) => res.status(code).json({ message });
 
+const findDuplicatedUser = async (idNumber, email) => {
+  // Confirma que el usuario no exista
+  // Se usa el método 'exec()' porque estamos pasando un párametro al método 'findOne()'
+  const duplicate = await User.findOne({ $or: [{ idNumber }, { email }] })
+    // para que no sea sensible a mayúsculas y minúsculas
+    .collation({
+      locale: 'es',
+      strength: 2,
+    })
+    .lean()
+    .exec();
+
+  return duplicate;
+};
+
 /**
  * @route   GET /users
  * @desc    Trae todos los usuarios
@@ -58,16 +73,7 @@ const createUser = async (req, res) => {
     return jsonWithMessage(res, 'Ingrese los campos requeridos');
   }
 
-  // Confirma que el usuario no exista
-  // Se usa el método 'exec()' porque estamos pasando un párametro al método 'findOne()'
-  const duplicate = await User.findOne({ $or: [{ idNumber }, { email }] })
-    .collation({
-      // para que no sea sensible a mayúsculas y minúsculas
-      locale: 'es',
-      strength: 2,
-    })
-    .lean()
-    .exec();
+  const duplicate = await findDuplicatedUser(idNumber, email);
 
   if (duplicate) jsonWithMessage(res, 'El usuario ya existe', 409); // 409 Conflict
 
@@ -144,7 +150,7 @@ const updateUser = async (req, res) => {
   }
 
   // Confirma que el usuario no esté duplicado
-  const userFound = await User.findOne({ idNumber }).lean().exec();
+  const userFound = await findDuplicatedUser(idNumber, email);
 
   if (userFound && userFound?._id.toString() !== id) {
     return jsonWithMessage(res, 'Número de identificación duplicado', 409);
@@ -219,7 +225,7 @@ const deleteUser = async (req, res) => {
 
   const message = `Usuario ${result.name} ${result.lastname} con número de identificación ${result.idNumber} eliminado`;
 
-  return res.json(message);
+  return jsonWithMessage(res, message, 200);
 };
 
 /**
@@ -251,15 +257,7 @@ const createAdmin = async (req, res) => {
     return jsonWithMessage(res, 'El usuario debe ser administrador');
   }
 
-  // Confirma que el usuario no exista
-  // Se usa el método 'exec()' porque estamos pasando un párametro al método 'findOne()'
-  const duplicate = await User.findOne({ $or: [{ idNumber }, { email }] })
-    .collation({
-      locale: 'es',
-      strength: 2,
-    })
-    .lean()
-    .exec();
+  const duplicate = await findDuplicatedUser(idNumber, email);
 
   if (duplicate) jsonWithMessage(res, 'El usuario ya existe', 409); // 409 Conflict
 
