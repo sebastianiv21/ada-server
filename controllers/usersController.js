@@ -1,4 +1,3 @@
-const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const Test = require('../models/Test');
@@ -20,6 +19,23 @@ const requiredFields = [
   'password',
 ];
 
+const jsonWithMessage = (res, message, code = 400) => res.status(code).json({ message });
+
+const findDuplicatedUser = async (idNumber, email) => {
+  // Confirma que el usuario no exista
+  // Se usa el método 'exec()' porque estamos pasando un párametro al método 'findOne()'
+  const duplicate = await User.findOne({ $or: [{ idNumber }, { email }] })
+    // para que no sea sensible a mayúsculas y minúsculas
+    .collation({
+      locale: 'es',
+      strength: 2,
+    })
+    .lean()
+    .exec();
+
+  return duplicate;
+};
+
 /**
  * @route   GET /users
  * @desc    Trae todos los usuarios
@@ -29,15 +45,13 @@ const requiredFields = [
  * y métodos que contiene el llamado a users. Se usa sólo para consultas ya
  * que si se quiere guardar un registro, se debe evitar usarlo
  */
-const getAllUsers = asyncHandler(async (req, res) => {
+const getAllUsers = async (req, res) => {
   const users = await User.find().select('-password').lean(); // '-password' para no traer la contraseña
 
-  if (!users?.length) {
-    res.status(400).json({ message: 'No se encontraron usuarios' });
-  }
+  if (!users?.length) jsonWithMessage(res, 'No se encontraron usuarios');
 
   return res.json(users);
-});
+};
 
 /**
  * @route   POST /users
@@ -46,7 +60,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
  * Con req.body se desestructura la información enviada del cliente para crear un usuario.
  * No se envían ni role ni active porque se asignan por defecto
  */
-const createUser = asyncHandler(async (req, res) => {
+const createUser = async (req, res) => {
   // Confirma que existan los campos requeridos
   const { idNumber, email, password, name, lastname, roles } = req.body;
 
@@ -56,16 +70,12 @@ const createUser = asyncHandler(async (req, res) => {
   );
 
   if (isMissingRequiredField || !Array.isArray(roles) || !roles.length) {
-    return res.status(400).json({ message: 'Ingrese los campos requeridos' });
+    return jsonWithMessage(res, 'Ingrese los campos requeridos');
   }
 
-  // Confirma que el usuario no exista
-  // Se usa el método 'exec()' porque estamos pasando un párametro al método 'findOne()'
-  const duplicate = await User.findOne({ $or: [{ idNumber }, { email }] })
-    .lean()
-    .exec();
+  const duplicate = await findDuplicatedUser(idNumber, email);
 
-  if (duplicate) res.status(409).json({ message: 'El usuario ya existe' }); // 409 Conflict
+  if (duplicate) jsonWithMessage(res, 'El usuario ya existe', 409); // 409 Conflict
 
   // Cifra la contraseña
   const hashedPwd = await bcrypt.hash(password, 10); // salt rounds
@@ -78,25 +88,27 @@ const createUser = asyncHandler(async (req, res) => {
 
   const user = await User.create(userObject);
 
-  if (!user) res.status(400).json({ message: 'Datos de usuario inválidos' });
+  if (!user) jsonWithMessage(res, 'Datos de usuario inválidos');
 
   // Usuario creado
-  return res
-    .status(201)
-    .json({ message: `Nuevo usuario ${name} ${lastname} registrado` });
-});
+  return jsonWithMessage(
+    res,
+    `Nuevo usuario ${name} ${lastname} registrado`,
+    201,
+  );
+};
 
 /**
  * @route   PATCH /users/:id
  * @desc    Actualiza un usuario por ID
  * @access  Private
  */
-const updateUser = asyncHandler(async (req, res) => {
+const updateUser = async (req, res) => {
   const { id } = req.params;
 
   // Confirma que el usuario a actualizar exista
   const userToUpdate = await User.findById(id).exec();
-  if (!userToUpdate) res.status(400).json({ message: 'Usuario no encontrado' });
+  if (!userToUpdate) jsonWithMessage(res, 'Usuario no encontrado');
 
   const {
     idType,
@@ -134,16 +146,14 @@ const updateUser = asyncHandler(async (req, res) => {
     !roles.length ||
     typeof active !== 'boolean'
   ) {
-    return res.status(400).json({ message: 'Ingrese los campos requeridos' });
+    return jsonWithMessage(res, 'Ingrese los campos requeridos');
   }
 
   // Confirma que el usuario no esté duplicado
-  const userFound = await User.findOne({ idNumber }).lean().exec();
+  const userFound = await findDuplicatedUser(idNumber, email);
 
   if (userFound && userFound?._id.toString() !== id) {
-    return res
-      .status(409)
-      .json({ message: 'Número de identificación duplicado' });
+    return jsonWithMessage(res, 'Número de identificación duplicado', 409);
   }
 
   // Actualiza el usuario
@@ -178,32 +188,36 @@ const updateUser = asyncHandler(async (req, res) => {
   // Guarda el usuario actualizado
   const updatedUser = await userToUpdate.save();
 
-  return res.json({
-    message: `Perfil de ${updatedUser.name} ${updatedUser.lastname} actualizado`,
-  });
-});
+  return jsonWithMessage(
+    res,
+    `Perfil de ${updatedUser.name} ${updatedUser.lastname} actualizado`,
+    200,
+  );
+};
 
 /**
  * @route   DELETE /users/:id
  * @desc    Elimina un usuario por ID
  * @access  Private
  */
-const deleteUser = asyncHandler(async (req, res) => {
+const deleteUser = async (req, res) => {
   const { id } = req.params;
 
   // 400 bad request
-  if (!id) res.status(400).json({ message: 'Se require ID del usuario' });
+  if (!id) jsonWithMessage(res, 'Ingrese el ID del usuario');
 
   // Confirma que el usuario exista
   const userToDelete = await User.findById(id).exec();
-  if (!userToDelete) res.status(400).json({ message: 'Usuario no encontrado' });
+  if (!userToDelete) jsonWithMessage(res, 'Usuario no encontrado');
 
   // Confirma que el usuario no tenga pruebas asignadas
   const testFromUser = await Test.findOne({ user: id }).lean().exec();
   if (testFromUser) {
-    return res
-      .status(400)
-      .json({ message: 'El usuario tiene pruebas asignadas' });
+    return jsonWithMessage(
+      res,
+      'No se puede eliminar el usuario porque tiene pruebas asignadas',
+      409,
+    );
   }
 
   // Elimina el usuario
@@ -211,14 +225,14 @@ const deleteUser = asyncHandler(async (req, res) => {
 
   const message = `Usuario ${result.name} ${result.lastname} con número de identificación ${result.idNumber} eliminado`;
 
-  return res.json(message);
-});
+  return jsonWithMessage(res, message, 200);
+};
 
 /**
  * @route   POST /users/create-admin
  * @desc    Crea un usuario administrador
  */
-const createAdmin = asyncHandler(async (req, res) => {
+const createAdmin = async (req, res) => {
   // search for admin
   const admin = await User.findOne({
     roles: { $elemMatch: { $eq: ROLES_LIST.ADMIN } },
@@ -226,7 +240,7 @@ const createAdmin = asyncHandler(async (req, res) => {
     .lean()
     .exec();
 
-  if (admin) res.status(409).json({ message: 'Ya existe un administrador' }); // 409 Conflict
+  if (admin) jsonWithMessage(res, 'Ya existe un administrador', 409); // 409 Conflict
 
   const { idNumber, email, password, roles } = req.body;
 
@@ -236,20 +250,16 @@ const createAdmin = asyncHandler(async (req, res) => {
   );
 
   if (isMissingRequiredField || !Array.isArray(roles) || !roles.length) {
-    return res.status(400).json({ message: 'Ingrese los campos requeridos' });
+    return jsonWithMessage(res, 'Ingrese los campos requeridos');
   }
 
   if (!roles.includes(ROLES_LIST.ADMIN)) {
-    return res.status(400).json({ message: 'El rol debe ser administrador' });
+    return jsonWithMessage(res, 'El usuario debe ser administrador');
   }
 
-  // Confirma que el usuario no exista
-  // Se usa el método 'exec()' porque estamos pasando un párametro al método 'findOne()'
-  const duplicate = await User.findOne({ $or: [{ idNumber }, { email }] })
-    .lean()
-    .exec();
+  const duplicate = await findDuplicatedUser(idNumber, email);
 
-  if (duplicate) res.status(409).json({ message: 'El usuario ya existe' }); // 409 Conflict
+  if (duplicate) jsonWithMessage(res, 'El usuario ya existe', 409); // 409 Conflict
 
   // Cifra la contraseña
   const hashedPwd = await bcrypt.hash(password, 10); // salt rounds
@@ -262,11 +272,15 @@ const createAdmin = asyncHandler(async (req, res) => {
 
   const user = await User.create(userObject);
 
-  if (!user) res.status(400).json({ message: 'Datos de usuario inválidos' });
+  if (!user) jsonWithMessage(res, 'Datos de usuario inválidos');
 
   // Administrador creado
-  return res.status(201).json({ message: 'Nuevo administrador registrado' });
-});
+  return jsonWithMessage(
+    res,
+    `Nuevo administrador ${user.name} ${user.lastname} registrado`,
+    201,
+  );
+};
 
 module.exports = {
   getAllUsers,
