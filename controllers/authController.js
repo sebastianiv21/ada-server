@@ -23,9 +23,9 @@ const login = async (req, res) => {
       .json({ message: 'Por favor ingrese correo y contraseña' });
   }
 
-  const foundUser = await User.findOne({ email }).exec();
+  const foundUser = await User.findOne({ email: email.toString() }).exec();
 
-  if (!foundUser || !foundUser.active) {
+  if (!foundUser?.active) {
     return res.status(401).json({ message: 'No autorizado' });
   }
 

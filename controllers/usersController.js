@@ -24,7 +24,9 @@ const jsonWithMessage = (res, message, code = 400) => res.status(code).json({ me
 const findDuplicatedUser = async (idNumber, email) => {
   // Confirma que el usuario no exista
   // Se usa el método 'exec()' porque estamos pasando un párametro al método 'findOne()'
-  const duplicate = await User.findOne({ $or: [{ idNumber }, { email }] })
+  const duplicate = await User.findOne({
+    $or: [{ idNumber: parseInt(idNumber, 10) }, { email: email.toString() }],
+  })
     // para que no sea sensible a mayúsculas y minúsculas
     .collation({
       locale: 'es',
