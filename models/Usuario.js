@@ -29,20 +29,25 @@ const usuarioSchema = new mongoose.Schema(
     generoId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
+      ref: 'Genero',
     },
     tipoSangreId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
+      ref: 'TipoSangre',
     },
     rhId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
+      ref: 'Rh',
     },
     estadoCivilId: {
       type: mongoose.Schema.Types.ObjectId,
+      ref: 'EstadoCivil',
     },
     epsId: {
       type: mongoose.Schema.Types.ObjectId,
+      ref: 'Eps',
     },
     // Datos de localizacion
     telefono: {
@@ -53,12 +58,14 @@ const usuarioSchema = new mongoose.Schema(
     direccion: String,
     municipioId: {
       type: mongoose.Schema.Types.ObjectId,
+      ref: 'Municipio',
     },
     // Información de la sesión
     rolId: {
       // Roles de usuario (paciente, médico, administrador o empleado)
       type: mongoose.Schema.Types.ObjectId,
       required: true,
+      ref: 'Rol',
     },
     activo: {
       type: Boolean,
@@ -76,6 +83,7 @@ const usuarioSchema = new mongoose.Schema(
     // Información de contacto
     contactoId: {
       type: mongoose.Schema.Types.ObjectId,
+      ref: 'ContactoUsuario',
     },
   },
   {
