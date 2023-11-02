@@ -19,7 +19,7 @@ const resultadoLaboratorioSchema = new mongoose.Schema(
 );
 
 resultadoLaboratorioSchema.plugin(Autoincrement, {
-  inc_field: 'numeroResultadoLaboratorio',
+  inc_field: 'codigoReferencia',
   id: 'resultadoLaboratorioNums',
   start_seq: 1000,
 });

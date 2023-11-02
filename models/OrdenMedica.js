@@ -25,7 +25,7 @@ const ordenMedicaSchema = new mongoose.Schema(
 );
 
 ordenMedicaSchema.plugin(Autoincrement, {
-  inc_field: 'numeroOrdenMedica',
+  inc_field: 'codigoReferencia',
   id: 'ordenMedicaNums',
   start_seq: 1000,
 });
