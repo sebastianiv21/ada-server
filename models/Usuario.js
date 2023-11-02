@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const usuarioSchema = new mongoose.Schema(
   {
     // Informacion personal
-    tipoDocumentoId: {
+    tipoDocumento: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: 'TipoDocumento',
@@ -26,26 +26,26 @@ const usuarioSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
-    generoId: {
+    genero: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: 'Genero',
     },
-    tipoSangreId: {
+    tipoSangre: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: 'TipoSangre',
     },
-    rhId: {
+    rh: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: 'Rh',
     },
-    estadoCivilId: {
+    estadoCivil: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'EstadoCivil',
     },
-    epsId: {
+    eps: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Eps',
     },
@@ -56,12 +56,12 @@ const usuarioSchema = new mongoose.Schema(
     },
     telefono2: Number,
     direccion: String,
-    municipioId: {
+    municipio: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Municipio',
     },
     // Información de la sesión
-    rolId: {
+    rol: {
       // Roles de usuario (paciente, médico, administrador o empleado)
       type: mongoose.Schema.Types.ObjectId,
       required: true,
@@ -81,7 +81,7 @@ const usuarioSchema = new mongoose.Schema(
       required: true,
     },
     // Información de contacto
-    contactoId: {
+    contacto: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'ContactoUsuario',
     },

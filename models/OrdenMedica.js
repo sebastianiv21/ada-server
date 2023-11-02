@@ -3,17 +3,17 @@ const Autoincrement = require('mongoose-sequence')(mongoose);
 
 const ordenMedicaSchema = new mongoose.Schema(
   {
-    medicoId: {
+    medico: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: 'Usuario',
     },
-    pacienteId: {
+    paciente: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: 'Usuario',
     },
-    tipoPruebaId: {
+    tipoPrueba: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: 'TipoPrueba',

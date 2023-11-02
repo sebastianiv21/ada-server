@@ -10,7 +10,7 @@ const sedeLaboratorioSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    municipioId: {
+    municipio: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: 'Municipio',

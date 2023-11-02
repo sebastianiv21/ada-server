@@ -2,17 +2,17 @@ const mongoose = require('mongoose');
 
 const citaLaboratorioSchema = new mongoose.Schema(
   {
-    sedeLaboratorioId: {
+    sedeLaboratorio: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: 'SedeLaboratorio',
     },
-    estadoCitaLaboratorioId: {
+    estadoCitaLaboratorio: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: 'EstadoCitaLaboratorio',
     },
-    ordenMedicaId: {
+    ordenMedica: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: 'OrdenMedica',

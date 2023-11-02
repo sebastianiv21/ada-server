@@ -3,7 +3,7 @@ const Autoincrement = require('mongoose-sequence')(mongoose);
 
 const resultadoLaboratorioSchema = new mongoose.Schema(
   {
-    citaLaboratorioId: {
+    citaLaboratorio: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: 'CitaLaboratorio',
