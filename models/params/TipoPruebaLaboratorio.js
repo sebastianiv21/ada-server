@@ -6,7 +6,7 @@ const tipoPruebaLaboratorioSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  recomendaciones: String,
+  observaciones: String,
   valorMinimo: Number,
   valorMaximo: Number,
   unidad: String,
