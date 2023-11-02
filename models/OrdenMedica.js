@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Autoincrement = require('mongoose-sequence')(mongoose);
 
 const ordenMedicaSchema = new mongoose.Schema(
   {
@@ -22,5 +23,11 @@ const ordenMedicaSchema = new mongoose.Schema(
     timestamps: true,
   },
 );
+
+ordenMedicaSchema.plugin(Autoincrement, {
+  inc_field: 'numeroOrdenMedica',
+  id: 'ordenMedicaNums',
+  start_seq: 1000,
+});
 
 module.exports = mongoose.model('OrdenMedica', ordenMedicaSchema);

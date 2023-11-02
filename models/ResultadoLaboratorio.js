@@ -1,25 +1,28 @@
 const mongoose = require('mongoose');
+const Autoincrement = require('mongoose-sequence')(mongoose);
 
 const resultadoLaboratorioSchema = new mongoose.Schema(
   {
-    nombre: {
-      type: String,
-      required: true,
-    },
-    direccion: {
-      type: String,
-      required: true,
-    },
-    municipioId: {
+    citaLaboratorioId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: 'Municipio',
+      ref: 'CitaLaboratorio',
+    },
+    resultado: {
+      type: Number,
+      required: true,
     },
   },
   {
     timestamps: true,
   },
 );
+
+resultadoLaboratorioSchema.plugin(Autoincrement, {
+  inc_field: 'numeroResultadoLaboratorio',
+  id: 'resultadoLaboratorioNums',
+  start_seq: 1000,
+});
 
 module.exports = mongoose.model(
   'ResultadoLaboratorio',
