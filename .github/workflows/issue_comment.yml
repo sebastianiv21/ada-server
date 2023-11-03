@@ -1,0 +1,38 @@
+name: Create a comment on new issues
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  comment-with-action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Create Branch 
+        id: create-branch
+        run: |
+          ISSUE_NUMBER="${{ github.event.issue.number }}"
+          ISSUE_TITLE="${{ github.event.issue.title }}"
+          FIRST_PART_OF_ISSUE_TITLE="$(echo $ISSUE_TITLE | cut -d "." -f 1)"
+          BRANCH_NAME="ADA-$ISSUE_NUMBER/$(echo $FIRST_PART_OF_ISSUE_TITLE | tr ' ' '-')"
+
+          git fetch
+          git checkout -b "$BRANCH_NAME" origin/main
+          echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+        continue-on-error: true
+
+      - name: Push Branch
+        if: steps.create-branch.outcome == 'success'
+        run: |
+          git push origin ${{ steps.create-branch.outputs.branch_name }}
+        
+      - name: Create comment
+        if: steps.create-branch.outcome == 'success'
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            Use \`git checkout ${{ steps.create-branch.outputs.branch_name }}\` to start working on this issue 👨‍💻
