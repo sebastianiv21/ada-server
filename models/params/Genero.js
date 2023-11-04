@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import { model, Schema } from 'mongoose';
 
-const generoSchema = new mongoose.Schema({
+const generoSchema = new Schema({
   nombre: {
     type: String,
     required: true,
@@ -8,4 +8,4 @@ const generoSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('Genero', generoSchema);
+export default model('Genero', generoSchema);

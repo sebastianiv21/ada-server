@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import { model, Schema } from 'mongoose';
 
-const epsSchema = new mongoose.Schema({
+const epsSchema = new Schema({
   nombre: {
     type: String,
     required: true,
@@ -8,4 +8,4 @@ const epsSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('Eps', epsSchema);
+export default model('Eps', epsSchema);

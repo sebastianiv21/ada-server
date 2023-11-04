@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import { model, Schema } from 'mongoose';
 
-const tipoPruebaLaboratorioSchema = new mongoose.Schema({
+const tipoPruebaLaboratorioSchema = new Schema({
   nombre: {
     type: String,
     required: true,
@@ -12,7 +12,4 @@ const tipoPruebaLaboratorioSchema = new mongoose.Schema({
   unidad: String,
 });
 
-module.exports = mongoose.model(
-  'TipoPruebaLaboratorio',
-  tipoPruebaLaboratorioSchema,
-);
+export default model('TipoPruebaLaboratorio', tipoPruebaLaboratorioSchema);

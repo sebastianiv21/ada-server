@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import { model, Schema } from 'mongoose';
 
-const tipoSangreSchema = new mongoose.Schema({
+const tipoSangreSchema = new Schema({
   nombre: {
     type: String,
     required: true,
@@ -8,4 +8,4 @@ const tipoSangreSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('TipoSangre', tipoSangreSchema);
+export default model('TipoSangre', tipoSangreSchema);
