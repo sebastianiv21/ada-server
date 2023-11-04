@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import { model, Schema } from 'mongoose';
 
-const rhSchema = new mongoose.Schema({
+const rhSchema = new Schema({
   nombre: {
     type: String,
     required: true,
@@ -8,4 +8,4 @@ const rhSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('Rh', rhSchema);
+export default model('Rh', rhSchema);

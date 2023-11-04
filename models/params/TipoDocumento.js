@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import { model, Schema } from 'mongoose';
 
-const tipoDocumentoSchema = new mongoose.Schema({
+const tipoDocumentoSchema = new Schema({
   nombre: {
     type: String,
     required: true,
@@ -8,4 +8,4 @@ const tipoDocumentoSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('TipoDocumento', tipoDocumentoSchema);
+export default model('TipoDocumento', tipoDocumentoSchema);

@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import { model, Schema } from 'mongoose';
 
-const estadoCivilSchema = new mongoose.Schema({
+const estadoCivilSchema = new Schema({
   nombre: {
     type: String,
     required: true,
@@ -8,4 +8,4 @@ const estadoCivilSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('EstadoCivil', estadoCivilSchema);
+export default model('EstadoCivil', estadoCivilSchema);
