@@ -1,4 +1,4 @@
-const { logEvents } = require('./logger');
+import { logEvents } from './logger.js';
 
 const errorHandler = (err, req, res) => {
   // middleware que maneja los errores
@@ -21,4 +21,4 @@ const errorHandler = (err, req, res) => {
   res.json({ message, isError: true }); // envía el error al cliente
 };
 
-module.exports = errorHandler;
+export default errorHandler;

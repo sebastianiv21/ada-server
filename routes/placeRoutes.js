@@ -1,11 +1,12 @@
-const express = require('express');
-const placesController = require('../controllers/placesController');
+import { Router } from 'express';
+import {
+  getAllDepartamentos,
+  getMunicipiosByDepartamento,
+} from '../controllers/placesController.js';
 
-const router = express.Router();
+const router = Router();
 
-router.route('/').get(placesController.getAllDepartamentos);
-router
-  .route('/:departamento')
-  .get(placesController.getMunicipiosByDepartamento);
+router.route('/').get(getAllDepartamentos);
+router.route('/:departamento').get(getMunicipiosByDepartamento);
 
-module.exports = router;
+export default router;

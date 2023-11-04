@@ -1,16 +1,19 @@
-const { format } = require('date-fns');
-const { v4: uuid } = require('uuid');
-const fs = require('fs');
-const fsPromises = require('fs').promises;
-const path = require('path');
+import { format } from 'date-fns';
+import { v4 as uuid } from 'uuid';
+import { existsSync, promises as fsPromises } from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-const logEvents = async (message, logFileName) => {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+export const logEvents = async (message, logFileName) => {
   const dateTime = format(new Date(), 'yyyyMMdd\tHH:mm:ss'); // formato de fecha 20210720 12:00:00
   const logItem = `${dateTime}\t${uuid()}\t${message}\n`; // uuid es un identificador único
   const logsDirPath = path.join(__dirname, '..', 'logs');
 
   try {
-    if (!fs.existsSync(logsDirPath)) {
+    if (!existsSync(logsDirPath)) {
       // si no existe el directorio logs
       await fsPromises.mkdir(logsDirPath); // lo crea
     }
@@ -24,7 +27,7 @@ const logEvents = async (message, logFileName) => {
   }
 };
 
-const logger = (req, res, next) => {
+export const logger = (req, res, next) => {
   // middleware que registra los eventos
   const { method, url, headers } = req;
   const logFileName = 'reqLog.log';
@@ -36,4 +39,4 @@ const logger = (req, res, next) => {
   next(); // pasa al siguiente middleware
 };
 
-module.exports = { logEvents, logger };
+// export default { logEvents, logger };

@@ -1,6 +1,6 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+import { compare } from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import User from '../models/User.js';
 
 // tiempo de expiracion de los tokens
 const EXPIRATION_TIME = Object.freeze({
@@ -29,7 +29,7 @@ const login = async (req, res) => {
     return res.status(401).json({ message: 'No autorizado' });
   }
 
-  const match = await bcrypt.compare(password, foundUser.password);
+  const match = await compare(password, foundUser.password);
 
   if (!match) return res.status(401).json({ message: 'No autorizado' });
 
@@ -118,8 +118,4 @@ const logout = async (req, res) => {
   res.status(200).json({ message: 'Cookie eliminada' });
 };
 
-module.exports = {
-  login,
-  refresh,
-  logout,
-};
+export { login, logout, refresh };

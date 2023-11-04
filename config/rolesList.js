@@ -5,4 +5,4 @@ const ROLES_LIST = Object.freeze({
   LAB: 7894,
 });
 
-module.exports = ROLES_LIST;
+export default ROLES_LIST;

@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+import { model, Schema } from 'mongoose';
 
-const placeSchema = new mongoose.Schema({
+const placeSchema = new Schema({
   idDepartamento: Number,
   departamento: String,
   idMunicipio: Number,
   municipio: String,
 });
 
-module.exports = mongoose.model('Place', placeSchema);
+export default model('Place', placeSchema);
