@@ -1,0 +1,10 @@
+# Retorna todos los parametros pedidos
+GET {{URL}}/parametros?parametrosQuery=Rol,EstadoCitaLaboratorio
+# Content-Type: application/json
+
+# {
+#   parametros: [
+#     'Rol', 'EstadoCitaLaboratorio'
+#   ]
+# }
+

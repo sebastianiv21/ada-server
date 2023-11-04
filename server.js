@@ -11,11 +11,9 @@ import connectDB from '#config/dbConn.js';
 
 // ROUTERS
 import rootRouter from '#routes/root.js';
-// import authRouter from './routes/authRoutes.js';
-// import usersRouter from './routes/usersRoutes.js';
-// import placeRouter from './routes/placeRoutes.js';
 import rolRouter from '#routes/params/rolRoutes.js';
 import estadoCitaLabRouter from '#routes/params/estadoCitaLabRoutes.js';
+import paramsRouter from '#routes/paramsRoutes.js';
 
 // Load environment variables
 const PORT = process.env.PORT || 3500;
@@ -33,11 +31,9 @@ app.use(json()); // nos permite usar JSON
 app.use(cookieParser()); // nos permite usar cookies
 
 app.use('/', rootRouter);
-// app.use('/auth', authRouter);
-// app.use('/users', usersRouter);
-// app.use('/places', placeRouter);
 app.use('/roles', rolRouter);
 app.use('/estados-cita-lab', estadoCitaLabRouter);
+app.use('/parametros', paramsRouter);
 
 app.all('*', (req, res) => {
   res.status(404);

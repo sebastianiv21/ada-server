@@ -38,5 +38,3 @@ export const logger = (req, res, next) => {
 
   next(); // pasa al siguiente middleware
 };
-
-// export default { logEvents, logger };

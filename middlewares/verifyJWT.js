@@ -1,5 +1,14 @@
+/**
+ * Verifica que el token sea válido, protege las rutas
+ * @param {Object} req - Request
+ * @param {Object} res - Response
+ * @param {Function} next - Next
+ * @returns {Object} - Response
+ * @example
+ */
+
 import jwt from 'jsonwebtoken';
-// TODO: apply this middleware to all routes that need to be protected (tests)
+
 const verifyJWT = (req, res, next) => {
   const authHeader = req.headers.authorization || req.headers.Authorization;
 
