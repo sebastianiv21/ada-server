@@ -1,9 +1,10 @@
 import 'express-async-errors'; // nos permite usar async/await en los middlewares sin necesidad de usar try/catch
 import express, { json } from 'express';
-import { join } from 'path';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import mongoose from 'mongoose';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import corsOptions from '#config/corsOptions.js';
 import { logEvents, logger } from '#middlewares/logger.js';
 import errorHandler from '#middlewares/errorHandler.js';
@@ -11,9 +12,10 @@ import connectDB from '#config/dbConn.js';
 
 // ROUTERS
 import rootRouter from '#routes/root.js';
-import rolRouter from '#routes/params/rolRoutes.js';
-import estadoCitaLabRouter from '#routes/params/estadoCitaLabRoutes.js';
 import paramsRouter from '#routes/paramsRoutes.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Load environment variables
 const PORT = process.env.PORT || 3500;
@@ -31,14 +33,12 @@ app.use(json()); // nos permite usar JSON
 app.use(cookieParser()); // nos permite usar cookies
 
 app.use('/', rootRouter);
-app.use('/roles', rolRouter);
-app.use('/estados-cita-lab', estadoCitaLabRouter);
 app.use('/parametros', paramsRouter);
 
 app.all('*', (req, res) => {
   res.status(404);
   if (req.accepts('html')) {
-    res.sendFile(join(__dirname, 'views', '404.html'));
+    res.sendFile(path.join(__dirname, 'views', '404.html'));
   } else if (req.accepts('json')) {
     res.json({ message: '404 No encontrado' });
   } else {
