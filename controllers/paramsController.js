@@ -4,10 +4,24 @@ import getParam from '#services/paramsServices.js';
 // parametros disponibles
 import Rol from '#models/params/Rol.js';
 import EstadoCitaLaboratorio from '#models/params/EstadoCitaLaboratorio.js';
+import Genero from '#models/params/Genero.js';
+import EstadoCivil from '#models/params/EstadoCivil.js';
+import TipoSangre from '#models/params/TipoSangre.js';
+import TipoDocumento from '#models/params/TipoDocumento.js';
+import Rh from '#models/params/Rh.js';
+import Eps from '#models/params/Eps.js';
+import TipoPruebaLaboratorio from '#models/params/TipoPruebaLaboratorio.js';
 
 const parametrosDisponibles = {
   Rol,
   EstadoCitaLaboratorio,
+  Genero,
+  EstadoCivil,
+  TipoSangre,
+  TipoDocumento,
+  Rh,
+  Eps,
+  TipoPruebaLaboratorio,
 };
 
 /**
@@ -35,8 +49,6 @@ const getParams = async (req, res) => {
   });
 
   await Promise.all(promesas);
-
-  console.log('listaParametros:', listaParametros);
 
   return jsonResponse(res, listaParametros, 200);
 };
