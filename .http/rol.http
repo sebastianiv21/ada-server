@@ -1,0 +1,2 @@
+# Retorna todos los roles
+GET {{URL}}/roles

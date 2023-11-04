@@ -28,6 +28,7 @@ app.use('/', require('./routes/root'));
 app.use('/auth', require('./routes/authRoutes'));
 app.use('/users', require('./routes/usersRoutes'));
 app.use('/places', require('./routes/placeRoutes'));
+app.use('/roles', require('./routes/rolRoutes'));
 
 app.all('*', (req, res) => {
   res.status(404);
