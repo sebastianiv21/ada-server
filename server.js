@@ -1,4 +1,3 @@
-import dontenv from 'dotenv';
 import 'express-async-errors'; // nos permite usar async/await en los middlewares sin necesidad de usar try/catch
 import express, { json } from 'express';
 import { join } from 'path';
@@ -18,7 +17,6 @@ import rootRouter from './routes/root.js';
 import rolRouter from './routes/params/rolRoutes.js';
 
 // Load environment variables
-dontenv.config();
 const PORT = process.env.PORT || 3500;
 const app = express();
 

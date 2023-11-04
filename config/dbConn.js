@@ -9,7 +9,6 @@ const USER = process.env.DATABASE_USER;
 const PWD = process.env.DATABASE_PASSWORD;
 const HOST = process.env.DATABASE_HOST;
 const DATABASE = process.env.DATABASE_NAME;
-console.table({ USER, PWD, HOST, DATABASE });
 
 const DATABASE_URI = `mongodb+srv://${USER}:${PWD}@${HOST}/${DATABASE}?retryWrites=true&w=majority`;
 
