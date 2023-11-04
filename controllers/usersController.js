@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
-import User from '../models/User.js';
-import Test from '../models/Test.js';
-import ROLES_LIST from '../config/rolesList.js';
+import User from '#models/User.js';
+import Test from '#models/Test.js';
+import ROLES_LIST from '#config/rolesList.js';
 
 // Campos requeridos para un usuario
 const requiredFields = [

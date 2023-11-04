@@ -4,6 +4,15 @@
   "description": "Backend part from ADA Health App",
   "main": "server.js",
   "type": "module",
+  "imports": {
+    "#config/*": "./config/*",
+    "#controllers/*": "./controllers/*",
+    "#middlewares/*": "./middlewares/*",
+    "#models/*": "./models/*",
+    "#routes/*": "./routes/*",
+    "#services/*": "./services/*",
+    "#utils": "./utils.js"
+  },
   "scripts": {
     "start": "node --env-file .env server.js",
     "dev": "nodemon --env-file .env server.js",

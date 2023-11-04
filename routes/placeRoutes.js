@@ -2,7 +2,7 @@ import { Router } from 'express';
 import {
   getAllDepartamentos,
   getMunicipiosByDepartamento,
-} from '../controllers/placesController.js';
+} from '#controllers/placesController.js';
 
 const router = Router();
 
