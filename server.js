@@ -4,17 +4,17 @@ import { join } from 'path';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import mongoose from 'mongoose';
-import corsOptions from './config/corsOptions.js';
-import { logEvents, logger } from './middleware/logger.js';
-import errorHandler from './middleware/errorHandler.js';
-import connectDB from './config/dbConn.js';
+import corsOptions from '#config/corsOptions.js';
+import { logEvents, logger } from '#middlewares/logger.js';
+import errorHandler from '#middlewares/errorHandler.js';
+import connectDB from '#config/dbConn.js';
 
 // ROUTERS
-import rootRouter from './routes/root.js';
+import rootRouter from '#routes/root.js';
 // import authRouter from './routes/authRoutes.js';
 // import usersRouter from './routes/usersRoutes.js';
 // import placeRouter from './routes/placeRoutes.js';
-import rolRouter from './routes/params/rolRoutes.js';
+import rolRouter from '#routes/params/rolRoutes.js';
 
 // Load environment variables
 const PORT = process.env.PORT || 3500;

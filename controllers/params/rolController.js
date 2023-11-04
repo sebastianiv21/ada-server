@@ -1,5 +1,5 @@
 import { jsonResponse } from '../../utils.js';
-import { get } from '../../services/params/rolServices.js';
+import { get } from '#services/params/rolServices.js';
 
 export async function getRoles(req, res) {
   const { skip, limit } = req.query;

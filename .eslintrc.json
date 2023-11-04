@@ -16,6 +16,12 @@
         "js": "ignorePackages"
       }
     ],
+    "import/no-unresolved": [
+      "error",
+      {
+        "ignore": ["^#.+"]
+      }
+    ],
     "import/no-extraneous-dependencies": [
       "error",
       {

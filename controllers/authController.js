@@ -1,6 +1,6 @@
 import { compare } from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import User from '../models/User.js';
+import User from '#models/User.js';
 
 // tiempo de expiracion de los tokens
 const EXPIRATION_TIME = Object.freeze({
