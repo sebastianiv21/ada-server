@@ -4,7 +4,7 @@
  * o de  sin origin (!origin) (peticiones desde Postman)
  */
 
-const allowedOrigins = require('./allowedOrigins');
+import allowedOrigins from './allowedOrigins.js';
 
 const corsOptions = {
   origin: (origin, callback) => {
@@ -18,4 +18,4 @@ const corsOptions = {
   optionsSuccessStatus: 200, // algunos navegadores (Chrome) requieren status 200
 };
 
-module.exports = corsOptions;
+export default corsOptions;

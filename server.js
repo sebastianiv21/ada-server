@@ -1,15 +1,24 @@
-require('dotenv').config(); // Load .env file (if exists)
-require('express-async-errors'); // nos permite usar async/await en los middlewares sin necesidad de usar try/catch
-const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const cors = require('cors');
-const mongoose = require('mongoose');
-const corsOptions = require('./config/corsOptions');
-const { logger, logEvents } = require('./middleware/logger');
-const errorHandler = require('./middleware/errorHandler');
-const connectDB = require('./config/dbConn');
+import dontenv from 'dotenv';
+import 'express-async-errors'; // nos permite usar async/await en los middlewares sin necesidad de usar try/catch
+import express, { json } from 'express';
+import { join } from 'path';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import mongoose from 'mongoose';
+import corsOptions from './config/corsOptions.js';
+import { logEvents, logger } from './middleware/logger.js';
+import errorHandler from './middleware/errorHandler.js';
+import connectDB from './config/dbConn.js';
 
+// ROUTERS
+import rootRouter from './routes/root.js';
+// import authRouter from './routes/authRoutes.js';
+// import usersRouter from './routes/usersRoutes.js';
+// import placeRouter from './routes/placeRoutes.js';
+import rolRouter from './routes/params/rolRoutes.js';
+
+// Load environment variables
+dontenv.config();
 const PORT = process.env.PORT || 3500;
 const app = express();
 
@@ -21,19 +30,19 @@ app.disable('x-powered-by');
 
 app.use(logger); // middleware que registra los eventos
 app.use(cors(corsOptions)); // nos permite usar CORS con las opciones configuradas
-app.use(express.json()); // nos permite usar JSON
+app.use(json()); // nos permite usar JSON
 app.use(cookieParser()); // nos permite usar cookies
 
-app.use('/', require('./routes/root'));
-app.use('/auth', require('./routes/authRoutes'));
-app.use('/users', require('./routes/usersRoutes'));
-app.use('/places', require('./routes/placeRoutes'));
-app.use('/roles', require('./routes/rolRoutes'));
+app.use('/', rootRouter);
+// app.use('/auth', authRouter);
+// app.use('/users', usersRouter);
+// app.use('/places', placeRouter);
+app.use('/roles', rolRouter);
 
 app.all('*', (req, res) => {
   res.status(404);
   if (req.accepts('html')) {
-    res.sendFile(path.join(__dirname, 'views', '404.html'));
+    res.sendFile(join(__dirname, 'views', '404.html'));
   } else if (req.accepts('json')) {
     res.json({ message: '404 No encontrado' });
   } else {

@@ -1,8 +1,8 @@
-const express = require('express');
+import { Router } from 'express';
+import usersController from '../controllers/usersController.js';
+import verifyJWT from '../middleware/verifyJWT.js';
 
-const router = express.Router();
-const usersController = require('../controllers/usersController');
-const verifyJWT = require('../middleware/verifyJWT');
+const router = Router();
 
 // router.use(verifyJWT); // TODO: aplicar este mismo middleware a tests y citas
 
@@ -16,4 +16,4 @@ router
   .delete(verifyJWT, usersController.deleteUser);
 router.post('/create-admin', usersController.createAdmin);
 
-module.exports = router;
+export default router;

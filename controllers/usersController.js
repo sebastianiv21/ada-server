@@ -1,7 +1,7 @@
-const bcrypt = require('bcrypt');
-const User = require('../models/User');
-const Test = require('../models/Test');
-const ROLES_LIST = require('../config/rolesList');
+import bcrypt from 'bcrypt';
+import User from '../models/User.js';
+import Test from '../models/Test.js';
+import ROLES_LIST from '../config/rolesList.js';
 
 // Campos requeridos para un usuario
 const requiredFields = [
@@ -19,7 +19,8 @@ const requiredFields = [
   'password',
 ];
 
-const jsonWithMessage = (res, message, code = 400) => res.status(code).json({ message });
+const jsonWithMessage = (res, message, code = 400) =>
+  res.status(code).json({ message });
 
 const findDuplicatedUser = async (idNumber, email) => {
   // Confirma que el usuario no exista
@@ -284,7 +285,7 @@ const createAdmin = async (req, res) => {
   );
 };
 
-module.exports = {
+export default {
   getAllUsers,
   createUser,
   updateUser,

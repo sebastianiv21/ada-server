@@ -1,11 +1,11 @@
-const express = require('express');
+import { Router } from 'express';
+import { join } from 'path';
 
-const router = express.Router();
-const path = require('path');
+const router = Router();
 
 // GET / - renderiza la vista index.html
-router.get('^/$|index(.html)?', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'views', 'index.html'));
+router.get('^/$|index(.html)?', (_, res) => {
+  res.sendFile(join(__dirname, '..', 'views', 'index.html'));
 });
 
-module.exports = router;
+export default router;

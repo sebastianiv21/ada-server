@@ -1,10 +1,12 @@
-const mongoose = require('mongoose');
-const Autoincrement = require('mongoose-sequence')(mongoose);
+import mongoose, { model, Schema } from 'mongoose';
+import mongooseSequence from 'mongoose-sequence';
 
-const testSchema = mongoose.Schema(
+const Autoincrement = mongooseSequence(mongoose);
+
+const testSchema = Schema(
   {
     user: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       required: true,
       ref: 'User',
     },
@@ -35,4 +37,4 @@ testSchema.plugin(Autoincrement, {
   start_seq: 1000,
 });
 
-module.exports = mongoose.model('Test', testSchema);
+export default model('Test', testSchema);

@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import { model, Schema } from 'mongoose';
 
-const userSchema = new mongoose.Schema(
+const userSchema = new Schema(
   {
     // Informacion personal
     idType: {
@@ -89,4 +89,4 @@ const userSchema = new mongoose.Schema(
   },
 );
 
-module.exports = mongoose.model('User', userSchema);
+export default model('User', userSchema);

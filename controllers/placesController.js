@@ -1,4 +1,4 @@
-const Place = require('../models/Place');
+import Place from '../models/Place.js';
 
 /**
  * @route   GET /places
@@ -33,7 +33,4 @@ const getMunicipiosByDepartamento = async (req, res) => {
   res.json(municipios);
 };
 
-module.exports = {
-  getAllDepartamentos,
-  getMunicipiosByDepartamento,
-};
+export { getAllDepartamentos, getMunicipiosByDepartamento };
