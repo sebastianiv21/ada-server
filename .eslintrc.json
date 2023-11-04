@@ -10,6 +10,12 @@
     "ecmaVersion": "latest"
   },
   "rules": {
+    "import/extensions": [
+      "error",
+      {
+        "js": "ignorePackages"
+      }
+    ],
     "import/no-extraneous-dependencies": [
       "error",
       {
