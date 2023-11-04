@@ -15,6 +15,7 @@ import rootRouter from '#routes/root.js';
 // import usersRouter from './routes/usersRoutes.js';
 // import placeRouter from './routes/placeRoutes.js';
 import rolRouter from '#routes/params/rolRoutes.js';
+import estadoCitaLabRouter from '#routes/params/estadoCitaLabRoutes.js';
 
 // Load environment variables
 const PORT = process.env.PORT || 3500;
@@ -36,6 +37,7 @@ app.use('/', rootRouter);
 // app.use('/users', usersRouter);
 // app.use('/places', placeRouter);
 app.use('/roles', rolRouter);
+app.use('/estados-cita-lab', estadoCitaLabRouter);
 
 app.all('*', (req, res) => {
   res.status(404);

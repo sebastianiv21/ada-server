@@ -1,0 +1,3 @@
+# Retorna todos los estados de cita de laboratorio
+GET {{URL}}/estados-cita-lab
+

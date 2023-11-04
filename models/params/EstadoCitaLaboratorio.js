@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import { model, Schema } from 'mongoose';
 
-const estadoCitaLaboratorioSchema = new mongoose.Schema({
+const estadoCitaLaboratorioSchema = new Schema({
   nombre: {
     type: String,
     required: true,
@@ -8,7 +8,4 @@ const estadoCitaLaboratorioSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model(
-  'EstadoCitaLaboratorio',
-  estadoCitaLaboratorioSchema,
-);
+export default model('EstadoCitaLaboratorio', estadoCitaLaboratorioSchema);
