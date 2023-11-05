@@ -1,11 +1,13 @@
 import { Router } from 'express';
-import getParams from '#controllers/paramsController.js';
+import controller from '#controllers/paramsController.js';
 import verifyJWT from '#middlewares/verifyJWT.js';
 
 const router = Router();
 
 // router.use(verifyJWT);
 
-router.route('/').get(getParams);
+router.route('/').get(controller.getParams);
+
+router.route('/:parametro').get(controller.getParamIdPorNombre);
 
 export default router;
