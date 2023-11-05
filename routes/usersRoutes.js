@@ -4,7 +4,7 @@ import verifyJWT from '#middlewares/verifyJWT.js';
 
 const router = Router();
 
-// router.use(verifyJWT); // TODO: aplicar este mismo middleware a tests y citas
+// router.use(verifyJWT);
 
 router
   .route('/')
