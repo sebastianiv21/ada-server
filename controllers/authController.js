@@ -1,6 +1,8 @@
 import { compare } from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '#models/User.js';
+import usuarioServices from '#services/usuarioServices.js';
+import { jsonResponse } from '#utils';
 
 // tiempo de expiracion de los tokens
 const EXPIRATION_TIME = Object.freeze({
@@ -10,35 +12,31 @@ const EXPIRATION_TIME = Object.freeze({
 });
 
 /**
- * @desc    Login user
+ * @desc    Iniciar sesión
  * @route   POST /auth
  * @access  Public
  */
 const login = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, clave } = req.body;
 
-  if (!email || !password) {
-    return res
-      .status(400)
-      .json({ message: 'Por favor ingrese correo y contraseña' });
+  const usuarioEncontrado = await usuarioServices.findUsuarioPorEmail(
+    email.toString(),
+  );
+
+  if (!usuarioEncontrado?.activo) {
+    return jsonResponse(res, { message: 'No autorizado' }, 401); // 401 Unauthorized
   }
 
-  const foundUser = await User.findOne({ email: email.toString() }).exec();
+  const match = await compare(clave, usuarioEncontrado.clave);
 
-  if (!foundUser?.active) {
-    return res.status(401).json({ message: 'No autorizado' });
-  }
-
-  const match = await compare(password, foundUser.password);
-
-  if (!match) return res.status(401).json({ message: 'No autorizado' });
+  if (!match) return jsonResponse(res, { message: 'No autorizado' }, 401);
 
   // Generar tokens
   const accessToken = jwt.sign(
     {
-      userInfo: {
-        email: foundUser.email,
-        roles: foundUser.roles,
+      infoUsuario: {
+        email: usuarioEncontrado.email,
+        rol: usuarioEncontrado.rol,
       },
     },
     process.env.ACCESS_TOKEN_SECRET,
@@ -46,7 +44,7 @@ const login = async (req, res) => {
   );
 
   const refreshToken = jwt.sign(
-    { email: foundUser.email },
+    { email: usuarioEncontrado.email },
     process.env.REFRESH_TOKEN_SECRET,
     { expiresIn: EXPIRATION_TIME.REFRESH_TOKEN },
   );
@@ -60,7 +58,7 @@ const login = async (req, res) => {
   });
 
   // envia accessToken
-  res.status(200).json({ accessToken });
+  return jsonResponse(res, { accessToken }, 200);
 };
 
 /**

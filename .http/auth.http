@@ -1,0 +1,8 @@
+# Iniciar sesion
+POST {{URL}}/auth
+Content-Type: application/json
+
+{
+    "email": "luisibarra@gmail.com",
+    "clave": "adahealth1234"
+}

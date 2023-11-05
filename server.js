@@ -12,6 +12,7 @@ import connectDB from '#config/dbConn.js';
 
 // ROUTERS
 import rootRouter from '#routes/root.js';
+import authRouter from '#routes/authRoutes.js';
 import paramsRouter from '#routes/paramsRoutes.js';
 import lugaresRouter from '#routes/lugaresRoutes.js';
 import usuariosRouter from '#routes/usuarioRoutes.js';
@@ -36,6 +37,7 @@ app.use(cookieParser()); // nos permite usar cookies
 
 // ROUTES
 app.use('/', rootRouter);
+app.use('/auth', authRouter);
 app.use('/parametros', paramsRouter);
 app.use('/lugares', lugaresRouter);
 app.use('/usuarios', usuariosRouter);
