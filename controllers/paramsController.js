@@ -1,5 +1,5 @@
 import { jsonResponse } from '#utils';
-import getParam from '#services/paramsServices.js';
+import services from '#services/paramsServices.js';
 
 // parametros disponibles
 import Rol from '#models/params/Rol.js';
@@ -45,7 +45,11 @@ const getParams = async (req, res) => {
 
   const promesas = arrayParametros.map(async (parametro) => {
     const modeloEncontrado = parametrosDisponibles[parametro];
-    listaParametros[parametro] = await getParam(modeloEncontrado, skip, limit);
+    listaParametros[parametro] = await services.getParam(
+      modeloEncontrado,
+      skip,
+      limit,
+    );
   });
 
   await Promise.all(promesas);
