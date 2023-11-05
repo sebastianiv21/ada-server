@@ -1,6 +1,5 @@
 import { compare } from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import User from '#models/User.js';
 import usuarioServices from '#services/usuarioServices.js';
 import { jsonResponse } from '#utils';
 
@@ -69,7 +68,9 @@ const login = async (req, res) => {
 const refresh = async (req, res) => {
   const { cookies } = req;
 
-  if (!cookies?.jwt) return res.status(401).json({ message: 'No autorizado' });
+  if (!cookies?.jwt) {
+    return jsonResponse(res, { message: 'No autorizado' }, 401);
+  }
 
   const refreshToken = cookies.jwt;
 
@@ -78,18 +79,22 @@ const refresh = async (req, res) => {
     refreshToken,
     process.env.REFRESH_TOKEN_SECRET,
     async (err, decoded) => {
-      if (err) return res.status(403).json({ message: 'No autorizado' });
+      if (err) return jsonResponse(res, { message: 'No autorizado' }, 403);
 
-      const foundUser = await User.findOne({ email: decoded.email }).exec();
+      const usuarioEncontrado = await usuarioServices.findUsuarioPorEmail(
+        decoded.email,
+      );
 
-      if (!foundUser) return res.status(401).json({ message: 'No autorizado' });
+      if (!usuarioEncontrado) {
+        return jsonResponse(res, { message: 'No autorizado' }, 401);
+      }
 
       // Generar tokens
       const accessToken = jwt.sign(
         {
-          userInfo: {
-            email: foundUser.email,
-            roles: foundUser.roles,
+          infoUsuario: {
+            email: usuarioEncontrado.email,
+            rol: usuarioEncontrado.rol,
           },
         },
         process.env.ACCESS_TOKEN_SECRET,
@@ -97,7 +102,7 @@ const refresh = async (req, res) => {
       );
 
       // envia accessToken
-      res.status(200).json({ accessToken });
+      return jsonResponse(res, { accessToken }, 200);
     },
   );
 };
@@ -110,10 +115,13 @@ const refresh = async (req, res) => {
 const logout = async (req, res) => {
   const { cookies } = req;
 
-  if (!cookies?.jwt) return res.sendStatus(204); // no hay cookie
+  if (!cookies?.jwt) {
+    return jsonResponse(res, { message: 'No autorizado' }, 204); // no hay cookie
+  }
 
   res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
-  res.status(200).json({ message: 'Cookie eliminada' });
+
+  return jsonResponse(res, { message: 'Cookie eliminada' }, 200);
 };
 
 export { login, logout, refresh };
