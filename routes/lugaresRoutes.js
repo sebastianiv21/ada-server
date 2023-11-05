@@ -11,7 +11,6 @@ router
   // obtiene la lista de departamentos
   .get(controller.getDepartamentos);
 
-// obtiene la lista de municipios de un departamento
 router
   .route('/municipios/:departamentoId')
   // obtiene la lista de municipios de un departamento

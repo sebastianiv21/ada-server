@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+import { model, Schema } from 'mongoose';
 
-const usuarioSchema = new mongoose.Schema(
+const usuarioSchema = new Schema(
   {
     // Informacion personal
     tipoDocumento: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       required: true,
       ref: 'TipoDocumento',
     },
@@ -27,26 +27,26 @@ const usuarioSchema = new mongoose.Schema(
       required: true,
     },
     genero: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       required: true,
       ref: 'Genero',
     },
     tipoSangre: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       required: true,
       ref: 'TipoSangre',
     },
     rh: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       required: true,
       ref: 'Rh',
     },
     estadoCivil: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'EstadoCivil',
     },
     eps: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'Eps',
     },
     // Datos de localizacion
@@ -57,13 +57,13 @@ const usuarioSchema = new mongoose.Schema(
     telefono2: Number,
     direccion: String,
     municipio: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'Municipio',
     },
     // Información de la sesión
     rol: {
       // Roles de usuario (paciente, médico, administrador o empleado)
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       required: true,
       ref: 'Rol',
     },
@@ -82,7 +82,7 @@ const usuarioSchema = new mongoose.Schema(
     },
     // Información de contacto
     contacto: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'ContactoUsuario',
     },
   },
@@ -91,4 +91,4 @@ const usuarioSchema = new mongoose.Schema(
   },
 );
 
-module.exports = mongoose.model('Usuario', usuarioSchema);
+export default model('Usuario', usuarioSchema);
