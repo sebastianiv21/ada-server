@@ -35,8 +35,15 @@ const findUsuarioDuplicado = async (numeroDocumento, email) => {
   return duplicado;
 };
 
+const findUsuarioPorEmail = async (email) => {
+  const usuario = await Usuario.findOne({ email }).lean().exec();
+
+  return usuario;
+};
+
 export default {
   createUsuario,
   findAdmin,
   findUsuarioDuplicado,
+  findUsuarioPorEmail,
 };

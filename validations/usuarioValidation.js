@@ -14,4 +14,9 @@ const adminSchema = object({
   email: string().email().required(),
 });
 
-export default { adminSchema };
+const loginSchema = object({
+  email: string().email().required(),
+  clave: string().required(),
+});
+
+export default { adminSchema, loginSchema };

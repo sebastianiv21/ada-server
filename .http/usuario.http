@@ -5,14 +5,14 @@ Content-Type: application/json
 {
     "tipoDocumento": "6546d8dfe7c0410f3f1f367d",
     "numeroDocumento": "1075309795",
-    "nombres": "Luis Sebastian",
-    "apellidos": "Ibarra Villamil",
-    "fechaNacimiento": "1998-02-21",
+    "nombres": "Luis",
+    "apellidos": "Ibarra",
+    "fechaNacimiento": "1990-04-28",
     "genero": "6546d734e7c0410f3f1f366b",
     "tipoSangre": "6546d7cde7c0410f3f1f3671",
     "rh": "6546d78fe7c0410f3f1f366f",
-    "telefono": 3123622460,
+    "telefono": 3120123456,
     "clave": "adahealth1234",
-    "email": "seluti98@gmail.com"
+    "email": "luisibarra@gmail.com"
 }
 
