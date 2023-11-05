@@ -1,106 +1,12 @@
 # Retorna todos los departamentos
 GET {{URL}}/lugares/departamentos
 
-# Crea un nuevo departamento
+# Sube los departamentos a la base de datos
 POST {{URL}}/lugares/departamentos
 Content-Type: application/json
 
-{ "arrayDepartamentos": [{
-  "_id": "TOLIMA"
-},
-{
-  "_id": "VICHADA"
-},
-{
-  "_id": "CAQUETA"
-},
-{
-  "_id": "SAN ANDRES"
-},
-{
-  "_id": "CESAR"
-},
-{
-  "_id": "HUILA"
-},
-{
-  "_id": "BOYACA"
-},
-{
-  "_id": "META"
-},
-{
-  "_id": "SUCRE"
-},
-{
-  "_id": "CASANARE"
-},
-{
-  "_id": "NARIÑO"
-},
-{
-  "_id": "BOLIVAR"
-},
-{
-  "_id": "ANTIOQUIA"
-},
-{
-  "_id": "MAGDALENA"
-},
-{
-  "_id": "CAUCA"
-},
-{
-  "_id": "QUINDIO"
-},
-{
-  "_id": "CALDAS"
-},
-{
-  "_id": "CHOCO"
-},
-{
-  "_id": "SANTANDER"
-},
-{
-  "_id": "GUAVIARE"
-},
-{
-  "_id": "RISARALDA"
-},
-{
-  "_id": "PUTUMAYO"
-},
-{
-  "_id": "LA GUAJIRA"
-},
-{
-  "_id": "AMAZONAS"
-},
-{
-  "_id": "GUAINIA"
-},
-{
-  "_id": "ARAUCA"
-},
-{
-  "_id": "BOGOTA"
-},
-{
-  "_id": "NORTE DE SANTANDER"
-},
-{
-  "_id": "CORDOBA"
-},
-{
-  "_id": "ATLANTICO"
-},
-{
-  "_id": "CUNDINAMARCA"
-},
-{
-  "_id": "VAUPES"
-},
-{
-  "_id": "VALLE DEL CAUCA"
-}]}
+{ "arrayDepartamentos": {{DEPARTAMENTOS}} }
+
+# Obtiene los municipios de un departamento especifico
+GET {{URL}}/lugares/municipios/{{DEPARTAMENTO_ID}}
+
