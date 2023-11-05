@@ -1,5 +1,4 @@
 import Usuario from '#models/Usuario.js';
-import Rol from '#models/params/Rol.js';
 import paramsServices from '#services/paramsServices.js';
 
 const createUsuario = async (usuario) => {
@@ -10,7 +9,7 @@ const createUsuario = async (usuario) => {
 
 const findAdmin = async () => {
   const adminRol = await paramsServices.getParamIdPorNombre(
-    Rol,
+    'Rol',
     'administrador',
   );
 
