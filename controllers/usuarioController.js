@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import { parseISO } from 'date-fns';
 import { jsonResponse } from '#utils';
 
 import services from '#services/usuarioServices.js';
@@ -19,9 +20,12 @@ const createAdmin = async (req, res) => {
     return jsonResponse(res, { message: 'Ya existe un administrador' }, 409); // 409 Conflict
   }
 
-  const { numeroDocumento, email, clave } = req.body;
+  const { numeroDocumento, email, clave, fechaNacimiento } = req.body;
 
-  const duplicado = await services.findUsuarioDuplicado(numeroDocumento, email);
+  const duplicado = await services.findUsuarioDuplicado(
+    numeroDocumento.toString(),
+    email.toString(),
+  );
 
   if (duplicado) {
     return jsonResponse(
@@ -36,6 +40,9 @@ const createAdmin = async (req, res) => {
   // Cifra la contraseña
   const claveCifrada = await bcrypt.hash(clave, 10); // salt rounds
 
+  // Convierte la fecha de nacimiento a formato ISO
+  const fechaNacimientoISO = parseISO(fechaNacimiento);
+
   // Obtiene el id del rol Administrador
   const idRolAdmin = await paramsServices.getParamIdPorNombre(
     'Rol',
@@ -46,6 +53,7 @@ const createAdmin = async (req, res) => {
   const usuario = {
     ...req.body,
     rol: idRolAdmin,
+    fechaNacimiento: fechaNacimientoISO,
     clave: claveCifrada,
   };
 

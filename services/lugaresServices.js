@@ -1,4 +1,3 @@
-import { Schema } from 'mongoose';
 import Departamento from '#models/Departamento.js';
 import Municipio from '#models/Municipio.js';
 
