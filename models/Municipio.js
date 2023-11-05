@@ -1,15 +1,15 @@
-const mongoose = require('mongoose');
+import { model, Schema } from 'mongoose';
 
-const municipioSchema = new mongoose.Schema({
+const municipioSchema = new Schema({
   nombre: {
     type: String,
     required: true,
   },
   departamentoId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'Departamento',
     required: true,
   },
 });
 
-module.exports = mongoose.model('Municipio', municipioSchema);
+export default model('Municipio', municipioSchema);

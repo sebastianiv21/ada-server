@@ -13,6 +13,7 @@ import connectDB from '#config/dbConn.js';
 // ROUTERS
 import rootRouter from '#routes/root.js';
 import paramsRouter from '#routes/paramsRoutes.js';
+import lugaresRouter from '#routes/lugaresRoutes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -34,13 +35,14 @@ app.use(cookieParser()); // nos permite usar cookies
 
 app.use('/', rootRouter);
 app.use('/parametros', paramsRouter);
+app.use('/lugares', lugaresRouter);
 
 app.all('*', (req, res) => {
   res.status(404);
-  if (req.accepts('html')) {
-    res.sendFile(path.join(__dirname, 'views', '404.html'));
-  } else if (req.accepts('json')) {
+  if (req.accepts('json')) {
     res.json({ message: '404 No encontrado' });
+  } else if (req.accepts('html')) {
+    res.sendFile(path.join(__dirname, 'views', '404.html'));
   } else {
     res.type('txt').send('404 No encontrado');
   }
