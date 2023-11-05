@@ -1,10 +1,7 @@
 # Retorna todos los parametros pedidos
 GET {{URL}}/parametros?parametrosQuery=Rol,EstadoCitaLaboratorio
-# Content-Type: application/json
+Accept: application/json
 
-# {
-#   parametros: [
-#     'Rol', 'EstadoCitaLaboratorio'
-#   ]
-# }
+# Retorna el id del valor de un parametro especifico por nombre
+GET {{URL}}/parametros/Rol?nombre=administrador
 

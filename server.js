@@ -33,6 +33,7 @@ app.use(cors(corsOptions)); // nos permite usar CORS con las opciones configurad
 app.use(json()); // nos permite usar JSON
 app.use(cookieParser()); // nos permite usar cookies
 
+// ROUTES
 app.use('/', rootRouter);
 app.use('/parametros', paramsRouter);
 app.use('/lugares', lugaresRouter);
