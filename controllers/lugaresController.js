@@ -12,7 +12,7 @@ const getMunicipiosPorDepartamentoId = async (req, res) => {
   const { departamentoId } = req.params;
 
   const municipios = await services.getMunicipiosPorDepartamentoId(
-    departamentoId,
+    departamentoId.toString(),
     skip,
     limit,
   );
@@ -24,7 +24,9 @@ const postDepartamentos = async (req, res) => {
   const { arrayDepartamentos } = req.body;
 
   const promesas = arrayDepartamentos.map(async (departamento) => {
-    await services.createDepartamento(departamento._id);
+    const nombreDepartamento = departamento._id;
+
+    await services.createDepartamento(nombreDepartamento);
   });
 
   await Promise.all(promesas);

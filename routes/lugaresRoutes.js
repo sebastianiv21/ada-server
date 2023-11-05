@@ -9,13 +9,12 @@ const router = Router();
 router
   .route('/departamentos')
   // obtiene la lista de departamentos
-  .get(controller.getDepartamentos)
-  // crea los departamentos
-  .post(controller.postDepartamentos);
+  .get(controller.getDepartamentos);
 
 // obtiene la lista de municipios de un departamento
 router
   .route('/municipios/:departamentoId')
+  // obtiene la lista de municipios de un departamento
   .get(controller.getMunicipiosPorDepartamentoId);
 
 export default router;
