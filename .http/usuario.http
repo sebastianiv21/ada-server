@@ -1,4 +1,9 @@
+# Crea un administrador
+POST {{URL}}/usuarios/crear-admin
+Content-Type: application/json
 
-GET https://pokeapi.co/api/v2/pokemon/pikachu
+{
+    "nombre": "Admin",
+    "email": "
+}
 
-Accept: application/json

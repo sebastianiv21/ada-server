@@ -14,6 +14,7 @@ import connectDB from '#config/dbConn.js';
 import rootRouter from '#routes/root.js';
 import paramsRouter from '#routes/paramsRoutes.js';
 import lugaresRouter from '#routes/lugaresRoutes.js';
+import usuariosRouter from '#routes/usuarioRoutes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -37,6 +38,7 @@ app.use(cookieParser()); // nos permite usar cookies
 app.use('/', rootRouter);
 app.use('/parametros', paramsRouter);
 app.use('/lugares', lugaresRouter);
+app.use('/usuarios', usuariosRouter);
 
 app.all('*', (req, res) => {
   res.status(404);
