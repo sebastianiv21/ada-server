@@ -5,7 +5,7 @@ const municipioSchema = new Schema({
     type: String,
     required: true,
   },
-  departamentoId: {
+  departamento: {
     type: Schema.Types.ObjectId,
     ref: 'Departamento',
     required: true,
