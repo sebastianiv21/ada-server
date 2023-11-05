@@ -59,20 +59,8 @@ const createDepartamento = async (nombreDepartamento) => {
   return nuevoDepartamento;
 };
 
-const createMunicipio = async (nombreMunicipio, departamentoId) => {
-  const municipio = {
-    nombre: nombreMunicipio,
-    departamento: Schema.Types.ObjectId(departamentoId),
-  };
-
-  const nuevoDepartamento = await Departamento.create(municipio);
-
-  return nuevoDepartamento;
-};
-
 export default {
   getDepartamentos,
   getMunicipiosPorDepartamentoId,
   createDepartamento,
-  createMunicipio,
 };

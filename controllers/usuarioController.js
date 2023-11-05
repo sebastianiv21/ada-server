@@ -17,6 +17,20 @@ const createAdmin = async (req, res) => {
     return jsonResponse(res, { message: 'Ya existe un administrador' }, 409); // 409 Conflict
   }
 
+  const { numeroDocumento, email } = req.body;
+
+  const duplicado = await services.findUsuarioDuplicado(numeroDocumento, email);
+
+  if (duplicado) {
+    return jsonResponse(
+      res,
+      {
+        message: 'Ya existe un usuario con ese número de documento o email',
+      },
+      409,
+    ); // 409 Conflict
+  }
+
   return jsonResponse(res, { message: 'No existe un administrador' }, 404); // 404 Not Found
 };
 
