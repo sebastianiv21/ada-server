@@ -6,3 +6,14 @@ Content-Type: application/json
     "email": "luisibarra@gmail.com",
     "clave": "adahealth1234"
 }
+
+{% 
+
+local body = context.json_decode(context.result.body)
+
+context.set_env("accessToken", body.accessToken)
+
+%}
+
+###
+GET https://jsonplaceholder.typicode.com/posts/{{postId}}
