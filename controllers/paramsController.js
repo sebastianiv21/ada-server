@@ -1,29 +1,6 @@
 import { jsonResponse } from '#utils';
 import services from '#services/paramsServices.js';
 
-// parametros disponibles
-import Rol from '#models/params/Rol.js';
-import EstadoCitaLaboratorio from '#models/params/EstadoCitaLaboratorio.js';
-import Genero from '#models/params/Genero.js';
-import EstadoCivil from '#models/params/EstadoCivil.js';
-import TipoSangre from '#models/params/TipoSangre.js';
-import TipoDocumento from '#models/params/TipoDocumento.js';
-import Rh from '#models/params/Rh.js';
-import Eps from '#models/params/Eps.js';
-import TipoPruebaLaboratorio from '#models/params/TipoPruebaLaboratorio.js';
-
-const parametrosDisponibles = {
-  Rol,
-  EstadoCitaLaboratorio,
-  Genero,
-  EstadoCivil,
-  TipoSangre,
-  TipoDocumento,
-  Rh,
-  Eps,
-  TipoPruebaLaboratorio,
-};
-
 /**
  * Obtiene los parametros disponibles
  * @param {Object} req Request
@@ -44,9 +21,8 @@ const getParams = async (req, res) => {
   const listaParametros = {};
 
   const promesas = arrayParametros.map(async (parametro) => {
-    const modeloEncontrado = parametrosDisponibles[parametro];
     listaParametros[parametro] = await services.getParam(
-      modeloEncontrado,
+      parametro,
       skip,
       limit,
     );
@@ -72,13 +48,7 @@ const getParamIdPorNombre = async (req, res) => {
     return jsonResponse(res, { message: 'Parámetros no válidos' }, 400);
   }
 
-  // valida que el parametro sea valido
-  const modeloEncontrado = parametrosDisponibles[parametro];
-  if (!modeloEncontrado) {
-    return jsonResponse(res, { message: 'Parámetro no válido' }, 400);
-  }
-
-  const idParam = await services.getParamIdPorNombre(modeloEncontrado, nombre);
+  const idParam = await services.getParamIdPorNombre(parametro, nombre);
 
   return jsonResponse(res, idParam, 200);
 };
