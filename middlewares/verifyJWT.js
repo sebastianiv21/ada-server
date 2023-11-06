@@ -23,6 +23,7 @@ const verifyJWT = (req, res, next) => {
 
     req.email = decoded.infoUsuario.email;
     req.rol = decoded.infoUsuario.rol;
+    req.id = decoded.infoUsuario.id;
     next();
   });
 };
