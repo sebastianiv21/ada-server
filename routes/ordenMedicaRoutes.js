@@ -11,14 +11,18 @@ router.use(verifyJWT);
 
 router.route('/').get(controller.getOrdenesMedicas);
 
+// trae las ordenes medicas de un paciente autenticado
+router.route('/mis-ordenes').get(controller.getMisOrdenesMedicas);
+
 router.post(
   '/crear',
   validateSchema(schemas.ordenMedicaSchema),
   controller.createOrdenMedica,
 );
-// router
-//   .route('/:id')
-//   .put(controller.updateUsuario)
-//   .delete(controller.deleteUsuario);
+
+router
+  .route('/:id')
+  .put(controller.updateOrdenMedica)
+  .delete(controller.deleteOrdenMedica);
 
 export default router;

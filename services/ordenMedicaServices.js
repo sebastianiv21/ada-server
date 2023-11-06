@@ -28,8 +28,22 @@ const findOrdenesMedicasPorIdPaciente = async (id, skip = 0, limit = 0) => {
   return ordenMedica;
 };
 
+const updateOrdenMedica = async (id, ordenMedica) => {
+  const ordenMedicaActualizada = await OrdenMedica.findByIdAndUpdate(
+    id,
+    ordenMedica,
+    { new: true },
+  )
+    .populate('medico paciente tipoPrueba')
+    .lean()
+    .exec();
+
+  return ordenMedicaActualizada;
+};
+
 export default {
   createOrdenMedica,
   findOrdenesMedicas,
   findOrdenesMedicasPorIdPaciente,
+  updateOrdenMedica,
 };
