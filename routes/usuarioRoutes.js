@@ -11,14 +11,17 @@ router.post(
   middleware.validateSchema(schemas.adminSchema),
   controller.createAdmin,
 );
+
+// Rutas para usuarios autenticados
+router.use(verifyJWT);
+
 router.route('/').get(controller.getUsuarios);
+
 router.post(
   '/crear',
   middleware.validateSchema(schemas.usuarioSchema),
   controller.createUsuario,
 );
-
-router.use(verifyJWT);
 
 //
 // router
