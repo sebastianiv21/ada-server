@@ -11,10 +11,11 @@ router.post(
   middleware.validAdmin(schemas.adminSchema),
   controller.createAdmin,
 );
+router.route('/').get(controller.getUsuarios);
+// .post(controller.createUsuario);
 
 router.use(verifyJWT);
 
-// router.route('/').get(controller.getUsuarios).post(controller.createUsuario);
 //
 // router
 //   .route('/:id')
