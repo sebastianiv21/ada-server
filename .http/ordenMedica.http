@@ -2,3 +2,8 @@
 GET {{URL}}/ordenes-medicas?skip=0&limit=0
 Accept: application/json
 Authorization: Bearer {{accessToken}}
+
+# crea una orden medica
+POST {{URL}}/ordenes-medicas/crear
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
