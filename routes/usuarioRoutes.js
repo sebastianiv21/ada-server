@@ -23,7 +23,9 @@ router.post(
   controller.createUsuario,
 );
 
-router.route('/:id').put(controller.updateUsuario);
-// .delete(controller.deleteUsuario);
+router
+  .route('/:id')
+  .put(controller.updateUsuario)
+  .delete(controller.deleteUsuario);
 
 export default router;
