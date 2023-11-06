@@ -1,20 +1,22 @@
-const mongoose = require('mongoose');
-const Autoincrement = require('mongoose-sequence')(mongoose);
+import mongoose, { model, Schema } from 'mongoose';
+import mongooseSequence from 'mongoose-sequence';
 
-const ordenMedicaSchema = new mongoose.Schema(
+const Autoincrement = mongooseSequence(mongoose);
+
+const ordenMedicaSchema = new Schema(
   {
     medico: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       required: true,
       ref: 'Usuario',
     },
     paciente: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       required: true,
       ref: 'Usuario',
     },
     tipoPrueba: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       required: true,
       ref: 'TipoPrueba',
     },
@@ -30,4 +32,4 @@ ordenMedicaSchema.plugin(Autoincrement, {
   start_seq: 1000,
 });
 
-module.exports = mongoose.model('OrdenMedica', ordenMedicaSchema);
+export default model('OrdenMedica', ordenMedicaSchema);

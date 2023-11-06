@@ -1,19 +1,19 @@
-const mongoose = require('mongoose');
+import { model, Schema } from 'mongoose';
 
-const citaLaboratorioSchema = new mongoose.Schema(
+const citaLaboratorioSchema = new Schema(
   {
     sedeLaboratorio: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       required: true,
       ref: 'SedeLaboratorio',
     },
     estadoCitaLaboratorio: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       required: true,
       ref: 'EstadoCitaLaboratorio',
     },
     ordenMedica: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       required: true,
       ref: 'OrdenMedica',
     },
@@ -27,4 +27,4 @@ const citaLaboratorioSchema = new mongoose.Schema(
   },
 );
 
-module.exports = mongoose.model('CitaLaboratorio', citaLaboratorioSchema);
+export default model('CitaLaboratorio', citaLaboratorioSchema);
