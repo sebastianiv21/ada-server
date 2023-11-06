@@ -55,10 +55,30 @@ const findUsuarioPorEmail = async (email) => {
   return usuario;
 };
 
+const findUsuarioPorId = async (id) => {
+  const usuario = await Usuario.findById(id).lean().exec();
+
+  return usuario;
+};
+
+const updateUsuario = async (id, usuario) => {
+  const usuarioActualizado = await Usuario.findByIdAndUpdate(
+    id,
+    { ...usuario },
+    { new: true },
+  )
+    .lean()
+    .exec();
+
+  return usuarioActualizado;
+};
+
 export default {
   createUsuario,
   findAdmin,
   findUsuarioDuplicado,
   findUsuarioPorEmail,
   findUsuarios,
+  findUsuarioPorId,
+  updateUsuario,
 };
