@@ -32,6 +32,30 @@ const getOrdenesMedicas = async (req, res) => {
 };
 
 /**
+ * @route GET /ordenes-medicas/mis-ordenes
+ * @desc Trae todas las ordenes medicas de un paciente
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @return {Object} - Response Object
+ * @access Private
+ */
+const getMisOrdenesMedicas = async (req, res) => {
+  const { id } = req.id;
+
+  const ordenesMedicas = await services.findOrdenesMedicasPorIdPaciente(id);
+
+  if (!ordenesMedicas?.length) {
+    return jsonResponse(
+      res,
+      { message: 'No se encontraron ordenes medicas', ordenesMedicas },
+      200,
+    );
+  }
+
+  return jsonResponse(res, { ordenesMedicas }, 200);
+};
+
+/**
  * @route   POST /ordenes-medicas/crear
  * @desc Crea una orden medica
  * @param {Object} req - Request Object
@@ -51,5 +75,6 @@ const createOrdenMedica = async (req, res) => {
 
 export default {
   getOrdenesMedicas,
+  getMisOrdenesMedicas,
   createOrdenMedica,
 };

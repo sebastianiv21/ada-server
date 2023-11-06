@@ -36,6 +36,7 @@ const login = async (req, res) => {
       infoUsuario: {
         email: usuarioEncontrado.email,
         rol: usuarioEncontrado.rol,
+        id: usuarioEncontrado._id,
       },
     },
     process.env.ACCESS_TOKEN_SECRET,
@@ -95,6 +96,7 @@ const refresh = async (req, res) => {
           infoUsuario: {
             email: usuarioEncontrado.email,
             rol: usuarioEncontrado.rol,
+            id: usuarioEncontrado._id,
           },
         },
         process.env.ACCESS_TOKEN_SECRET,

@@ -17,7 +17,17 @@ const findOrdenesMedicas = async (skip, limit) => {
   return ordenesMedicas;
 };
 
+const findOrdenesMedicasPorIdPaciente = async (id) => {
+  const ordenMedica = await OrdenMedica.find({ paciente: id })
+    .populate('medico paciente tipoPrueba')
+    .lean()
+    .exec();
+
+  return ordenMedica;
+};
+
 export default {
   createOrdenMedica,
   findOrdenesMedicas,
+  findOrdenesMedicasPorIdPaciente,
 };
