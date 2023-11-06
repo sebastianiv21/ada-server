@@ -10,7 +10,8 @@ const findOrdenesMedicas = async (skip = 0, limit = 0) => {
   const ordenesMedicas = await OrdenMedica.find()
     .skip(skip)
     .limit(limit)
-    .populate('medico paciente tipoPruebaLaboratorio')
+    // trae la información de los documentos referenciados, excepto la clave de los usuarios
+    .populate('medico paciente tipoPruebaLaboratorio', '-clave')
     .lean()
     .exec();
 
@@ -19,7 +20,8 @@ const findOrdenesMedicas = async (skip = 0, limit = 0) => {
 
 const findOrdenesMedicasPorIdPaciente = async (id, skip = 0, limit = 0) => {
   const ordenMedica = await OrdenMedica.find({ paciente: id })
-    .populate('medico paciente tipoPruebaLaboratorio')
+    // trae la información de los documentos referenciados, excepto la clave de los usuarios
+    .populate('medico paciente tipoPruebaLaboratorio', '-clave')
     .skip(skip)
     .limit(limit)
     .lean()
