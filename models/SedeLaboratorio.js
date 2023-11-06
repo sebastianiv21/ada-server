@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import { model, Schema } from 'mongoose';
 
-const sedeLaboratorioSchema = new mongoose.Schema(
+const sedeLaboratorioSchema = new Schema(
   {
     nombre: {
       type: String,
@@ -11,7 +11,7 @@ const sedeLaboratorioSchema = new mongoose.Schema(
       required: true,
     },
     municipio: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       required: true,
       ref: 'Municipio',
     },
@@ -21,4 +21,4 @@ const sedeLaboratorioSchema = new mongoose.Schema(
   },
 );
 
-module.exports = mongoose.model('SedeLaboratorio', sedeLaboratorioSchema);
+export default model('SedeLaboratorio', sedeLaboratorioSchema);
