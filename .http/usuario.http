@@ -45,3 +45,24 @@ Content-Type: application/json
     "email": "luisibarra@gmail.com"
 }
 
+###
+
+# Actualiza un usuario
+PUT {{URL}}/usuarios/{{ID_USUARIO}}
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "tipoDocumento": "6546d8dfe7c0410f3f1f367d",
+    "numeroDocumento": "1548342852",
+    "nombres": "Andrea",
+    "apellidos": "Becerra",
+    "fechaNacimiento": "1995-12-24",
+    "genero": "6546d753e7c0410f3f1f366c",
+    "tipoSangre": "6546d7cde7c0410f3f1f3671",
+    "rol": "65465c9ce7c0410f3f1f3662",
+    "rh": "6546d76de7c0410f3f1f366e",
+    "telefono": 3213456678,
+    "email": "andreabecerra@gmail.com"
+}
+

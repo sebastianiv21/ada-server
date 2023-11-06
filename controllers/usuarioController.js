@@ -87,6 +87,61 @@ const createUsuario = async (req, res) => {
 };
 
 /**
+ * @route   PUT /usuarios/:id
+ * @desc Actualiza un usuario
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @return {Object} - Response Object
+ */
+const updateUsuario = async (req, res) => {
+  const { id } = req.params;
+
+  const usuario = await services.findUsuarioPorId(id);
+
+  if (!usuario) {
+    return jsonResponse(res, { message: 'Usuario no encontrado' }, 404); // 404 Not Found
+  }
+
+  const { numeroDocumento, email, clave, fechaNacimiento } = req.body;
+
+  const duplicado = await services.findUsuarioDuplicado(
+    numeroDocumento.toString(),
+    email.toString(),
+  );
+
+  // valida que no exista un usuario con el mismo número de documento o email
+  if (duplicado && duplicado?._id.toString() !== id) {
+    return jsonResponse(
+      res,
+      {
+        message: 'Ya existe un usuario con ese número de documento o email',
+      },
+      409,
+    ); // 409 Conflict
+  }
+
+  // crea una copia del usuario
+  const usuarioActualizado = { ...req.body };
+
+  // Cifra la contraseña
+  if (clave) {
+    const claveCifrada = await bcrypt.hash(clave, 10); // salt rounds
+    usuarioActualizado.clave = claveCifrada;
+  }
+
+  // Convierte la fecha de nacimiento a formato ISO
+  if (fechaNacimiento) {
+    const fechaNacimientoISO = parseISO(fechaNacimiento);
+    usuarioActualizado.fechaNacimiento = fechaNacimientoISO;
+  }
+
+  // Actualiza el usuario
+  await services.updateUsuario(id, req.body);
+
+  return jsonResponse(res, { message: 'Usuario actualizado exitosamente' });
+};
+
+/**
  * @route   POST /users/crear-admin
  * @desc Crea un usuario administrador si no existe ninguno
  * @param {Object} req - Request Object
@@ -147,4 +202,4 @@ const createAdmin = async (req, res) => {
   ); // 201 Created
 };
 
-export default { createAdmin, getUsuarios, createUsuario };
+export default { createAdmin, getUsuarios, createUsuario, updateUsuario };
