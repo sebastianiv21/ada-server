@@ -21,8 +21,8 @@ const verifyJWT = (req, res, next) => {
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
     if (err) return res.status(403).json({ message: 'No autorizado' });
 
-    req.email = decoded.userInfo.email;
-    req.roles = decoded.userInfo.roles;
+    req.email = decoded.infoUsuario.email;
+    req.rol = decoded.infoUsuario.rol;
     next();
   });
 };

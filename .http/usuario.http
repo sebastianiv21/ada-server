@@ -1,12 +1,14 @@
 # Trae todos los usuarios
 GET {{URL}}/usuarios?skip=0&limit=0
 Accept: application/json
+Authorization: Bearer {{accessToken}}
 
 ###
 
 # Crea un usuario
 POST {{URL}}/usuarios/crear
 Content-Type: application/json
+Authorization: Bearer {{accessToken}}
 
 {
     "tipoDocumento": "6546d8dfe7c0410f3f1f367d",
