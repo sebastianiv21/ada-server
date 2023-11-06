@@ -66,3 +66,9 @@ Authorization: Bearer {{accessToken}}
     "email": "andreabecerra@gmail.com"
 }
 
+###
+
+# Elimina un usuario
+DELETE {{URL}}/usuarios/{{ID_USUARIO}}
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}

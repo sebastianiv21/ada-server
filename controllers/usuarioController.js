@@ -142,6 +142,34 @@ const updateUsuario = async (req, res) => {
 };
 
 /**
+ * @route   DELETE /usuarios/:id
+ * @desc Elimina un usuario por ID
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @return {Object} - Response Object
+ */
+const deleteUsuario = async (req, res) => {
+  const { id } = req.params;
+
+  // valida que se envie el id del usuario
+  if (!id) {
+    return jsonResponse(res, { message: 'Ingrese el ID del usuario' }, 400); // 400 Bad Request
+  }
+
+  // Confirma que el usuario exista
+  const usuario = await services.findUsuarioPorId(id);
+
+  if (!usuario) {
+    return jsonResponse(res, { message: 'Usuario no encontrado' }, 404); // 404 Not Found
+  }
+
+  // Elimina el usuario
+  await services.deleteUsuario(id);
+
+  return jsonResponse(res, { message: 'Usuario eliminado exitosamente' });
+};
+
+/**
  * @route   POST /users/crear-admin
  * @desc Crea un usuario administrador si no existe ninguno
  * @param {Object} req - Request Object
@@ -202,4 +230,10 @@ const createAdmin = async (req, res) => {
   ); // 201 Created
 };
 
-export default { createAdmin, getUsuarios, createUsuario, updateUsuario };
+export default {
+  createAdmin,
+  getUsuarios,
+  createUsuario,
+  updateUsuario,
+  deleteUsuario,
+};

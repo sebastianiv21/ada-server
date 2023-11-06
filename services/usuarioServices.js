@@ -73,6 +73,10 @@ const updateUsuario = async (id, usuario) => {
   return usuarioActualizado;
 };
 
+const deleteUsuario = async (id) => {
+  await Usuario.findByIdAndDelete(id).lean().exec();
+};
+
 export default {
   createUsuario,
   findAdmin,
@@ -81,4 +85,5 @@ export default {
   findUsuarios,
   findUsuarioPorId,
   updateUsuario,
+  deleteUsuario,
 };
