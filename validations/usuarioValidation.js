@@ -20,6 +20,10 @@ const adminSchema = object({
     .required('El email es requerido'),
 });
 
+const usuarioSchema = adminSchema.shape({
+  rol: string().required('Seleccione el rol'),
+});
+
 const loginSchema = object({
   email: string()
     .email('Ingrese un email válido')
@@ -31,4 +35,4 @@ const loginSchema = object({
     .trim(),
 });
 
-export default { adminSchema, loginSchema };
+export default { adminSchema, usuarioSchema, loginSchema };

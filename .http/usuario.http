@@ -1,10 +1,37 @@
+# Trae todos los usuarios
+GET {{URL}}/usuarios?skip=0&limit=0
+Accept: application/json
+
+###
+
+# Crea un usuario
+POST {{URL}}/usuarios/crear
+Content-Type: application/json
+
+{
+    "tipoDocumento": "6546d8dfe7c0410f3f1f367d",
+    "numeroDocumento": "1548342852",
+    "nombres": "Andrea",
+    "apellidos": "Becerra",
+    "fechaNacimiento": "1994-12-24",
+    "genero": "6546d753e7c0410f3f1f366c",
+    "tipoSangre": "6546d7cde7c0410f3f1f3671",
+    "rol": "65465c9ce7c0410f3f1f3662",
+    "rh": "6546d76de7c0410f3f1f366e",
+    "telefono": 3213456678,
+    "clave": "adahealth1234",
+    "email": "andreabecerra@gmail.com"
+}
+
+###
+
 # Crea un administrador
 POST {{URL}}/usuarios/crear-admin
 Content-Type: application/json
 
 {
     "tipoDocumento": "6546d8dfe7c0410f3f1f367d",
-    "numeroDocumento": "1075309795",
+    "numeroDocumento": "1424131594",
     "nombres": "Luis",
     "apellidos": "Ibarra",
     "fechaNacimiento": "1990-04-28",
@@ -16,6 +43,3 @@ Content-Type: application/json
     "email": "luisibarra@gmail.com"
 }
 
-# Trae todos los usuarios
-GET {{URL}}/usuarios?skip=0&limit=0
-Accept: application/json
