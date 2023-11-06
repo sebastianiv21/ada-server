@@ -3,7 +3,43 @@ GET {{URL}}/ordenes-medicas?skip=0&limit=0
 Accept: application/json
 Authorization: Bearer {{accessToken}}
 
+###
+
+# Trae las ordenes medicas de un paciente logueado
+GET {{URL}}/ordenes-medicas/mis-ordenes
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+###
+
 # crea una orden medica
 POST {{URL}}/ordenes-medicas/crear
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
+
+{
+  "medico": "",
+  "paciente": "",
+  "tipoPrueba": ""
+}
+
+###
+
+# edita una orden medica
+PUT {{URL}}/ordenes-medicas/{{id}}
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "medico": "",
+  "paciente": "",
+  "tipoPrueba": ""
+}
+
+###
+
+# elimina una orden medica
+DELETE {{URL}}/ordenes-medicas/{{id}}
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
