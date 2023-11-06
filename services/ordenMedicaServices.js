@@ -41,9 +41,14 @@ const updateOrdenMedica = async (id, ordenMedica) => {
   return ordenMedicaActualizada;
 };
 
+const deleteOrdenMedica = async (id) => {
+  await OrdenMedica.findByIdAndDelete(id);
+};
+
 export default {
   createOrdenMedica,
   findOrdenesMedicas,
   findOrdenesMedicasPorIdPaciente,
   updateOrdenMedica,
+  deleteOrdenMedica,
 };
