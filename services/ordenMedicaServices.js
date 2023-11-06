@@ -6,7 +6,7 @@ const createOrdenMedica = async (ordenMedica) => {
   return ordenMedicaCreada;
 };
 
-const findOrdenesMedicas = async (skip = 10, limit = 10) => {
+const findOrdenesMedicas = async (skip = 0, limit = 0) => {
   const ordenesMedicas = await OrdenMedica.find()
     .skip(skip)
     .limit(limit)
@@ -17,7 +17,7 @@ const findOrdenesMedicas = async (skip = 10, limit = 10) => {
   return ordenesMedicas;
 };
 
-const findOrdenesMedicasPorIdPaciente = async (id, skip = 10, limit = 10) => {
+const findOrdenesMedicasPorIdPaciente = async (id, skip = 0, limit = 0) => {
   const ordenMedica = await OrdenMedica.find({ paciente: id })
     .populate('medico paciente tipoPrueba')
     .skip(skip)
