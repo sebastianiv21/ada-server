@@ -16,3 +16,6 @@ Content-Type: application/json
     "email": "luisibarra@gmail.com"
 }
 
+# Trae todos los usuarios
+GET {{URL}}/usuarios?skip=0&limit=0
+Accept: application/json

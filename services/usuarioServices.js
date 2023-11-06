@@ -7,6 +7,20 @@ const createUsuario = async (usuario) => {
   return usuarioCreado;
 };
 
+const findUsuarios = async (skip, limit) => {
+  const usuarios = await Usuario.find()
+    .select('-clave')
+    .skip(skip)
+    .limit(limit)
+    .populate(
+      'tipoDocumento genero tipoSangre rh estadoCivil eps rol municipio contacto',
+    )
+    .lean()
+    .exec();
+
+  return usuarios;
+};
+
 const findAdmin = async () => {
   const adminRol = await paramsServices.getParamIdPorNombre(
     'Rol',
@@ -46,4 +60,5 @@ export default {
   findAdmin,
   findUsuarioDuplicado,
   findUsuarioPorEmail,
+  findUsuarios,
 };

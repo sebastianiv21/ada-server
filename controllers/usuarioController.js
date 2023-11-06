@@ -6,6 +6,27 @@ import services from '#services/usuarioServices.js';
 import paramsServices from '#services/paramsServices.js';
 
 /**
+ * @route GET /users
+ * @desc Trae todos los usuarios
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @query {Integer} skip - Número de registros a saltar
+ * @query {Integer} limit - Número de registros a traer
+ * @return {Object} - Response Object
+ */
+const getUsuarios = async (req, res) => {
+  const { skip, limit } = req.query;
+
+  const usuarios = await services.findUsuarios(Number(skip), Number(limit));
+
+  if (!usuarios?.length) {
+    return jsonResponse(res, { message: 'No se encontraron usuarios' }, 204);
+  }
+
+  return jsonResponse(res, { usuarios }, 200); // 204 No Content
+};
+
+/**
  * @route   POST /users/crear-admin
  * @desc Crea un usuario administrador si no existe ninguno
  * @param {Object} req - Request Object
@@ -66,4 +87,4 @@ const createAdmin = async (req, res) => {
   ); // 201 Created
 };
 
-export default { createAdmin };
+export default { createAdmin, getUsuarios };

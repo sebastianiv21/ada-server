@@ -15,5 +15,3 @@ context.set_env("accessToken", body.accessToken)
 
 %}
 
-###
-GET https://jsonplaceholder.typicode.com/posts/{{postId}}
