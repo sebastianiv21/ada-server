@@ -20,7 +20,14 @@ const getUsuarios = async (req, res) => {
   const usuarios = await services.findUsuarios(Number(skip), Number(limit));
 
   if (!usuarios?.length) {
-    return jsonResponse(res, { message: 'No se encontraron usuarios' }, 204);
+    return jsonResponse(
+      res,
+      {
+        message: 'No se encontraron usuarios',
+        usuarios,
+      },
+      200,
+    );
   }
 
   return jsonResponse(res, { usuarios }, 200); // 204 No Content
