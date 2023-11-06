@@ -1,14 +1,14 @@
 import { Router } from 'express';
 import controller from '#controllers/usuarioController.js';
 import schemas from '#validations/usuarioValidation.js';
-import middleware from '#middlewares/usuarioMiddleware.js';
+import validateSchema from '#middlewares/validateSchema.js';
 import verifyJWT from '#middlewares/verifyJWT.js';
 
 const router = Router();
 
 router.post(
   '/crear-admin',
-  middleware.validateSchema(schemas.adminSchema),
+  validateSchema(schemas.adminSchema),
   controller.createAdmin,
 );
 
@@ -19,7 +19,7 @@ router.route('/').get(controller.getUsuarios);
 
 router.post(
   '/crear',
-  middleware.validateSchema(schemas.usuarioSchema),
+  validateSchema(schemas.usuarioSchema),
   controller.createUsuario,
 );
 

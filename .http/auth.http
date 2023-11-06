@@ -15,3 +15,12 @@ context.set_env("accessToken", body.accessToken)
 
 %}
 
+###
+
+# Renueva el accessToken
+POST {{URL}}/auth/refresh
+
+###
+
+# Cierra sesion
+POST {{URL}}/auth/logout
