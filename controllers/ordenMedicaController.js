@@ -41,8 +41,13 @@ const getOrdenesMedicas = async (req, res) => {
  */
 const getMisOrdenesMedicas = async (req, res) => {
   const { id } = req.id;
+  const { skip, limit } = req.query;
 
-  const ordenesMedicas = await services.findOrdenesMedicasPorIdPaciente(id);
+  const ordenesMedicas = await services.findOrdenesMedicasPorIdPaciente(
+    id.toString(),
+    Number(skip),
+    Number(limit),
+  );
 
   if (!ordenesMedicas?.length) {
     return jsonResponse(
