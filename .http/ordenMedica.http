@@ -26,7 +26,7 @@ Authorization: Bearer {{accessToken}}
 ###
 
 # edita una orden medica
-PUT {{URL}}/ordenes-medicas/{{id}}
+PUT {{URL}}/ordenes-medicas/65495ae51284faf8a76606f8
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
@@ -39,7 +39,7 @@ Authorization: Bearer {{accessToken}}
 ###
 
 # elimina una orden medica
-DELETE {{URL}}/ordenes-medicas/{{id}}
+DELETE {{URL}}/ordenes-medicas/65495725848846200df05f77
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
