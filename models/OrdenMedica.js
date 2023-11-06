@@ -1,7 +1,4 @@
-import mongoose, { model, Schema } from 'mongoose';
-import Inc from 'mongoose-sequence';
-
-const Autoincrement = Inc(mongoose);
+import { model, Schema } from 'mongoose';
 
 const ordenMedicaSchema = new Schema(
   {
@@ -18,18 +15,12 @@ const ordenMedicaSchema = new Schema(
     tipoPruebaLaboratorio: {
       type: Schema.Types.ObjectId,
       required: true,
-      ref: 'tipoPruebaLaboratorio',
+      ref: 'TipoPruebaLaboratorio',
     },
   },
   {
     timestamps: true,
   },
 );
-
-ordenMedicaSchema.plugin(Autoincrement, {
-  inc_field: 'codigoReferencia',
-  id: 'ordenMedicaNums',
-  start_seq: 1000,
-});
 
 export default model('OrdenMedica', ordenMedicaSchema);
