@@ -100,9 +100,30 @@ const updateOrdenMedica = async (req, res) => {
   ); // 200 OK
 };
 
+/**
+ * @route   DELETE /ordenes-medicas/:id
+ * @desc Elimina una orden medica
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @return {Object} - Response Object
+ * @access Private
+ */
+const deleteOrdenMedica = async (req, res) => {
+  const { id } = req.params;
+
+  await services.deleteOrdenMedica(id.toString());
+
+  return jsonResponse(
+    res,
+    { message: 'Orden médica eliminada exitosamente' },
+    200,
+  ); // 200 OK
+};
+
 export default {
   getOrdenesMedicas,
   getMisOrdenesMedicas,
   createOrdenMedica,
   updateOrdenMedica,
+  deleteOrdenMedica,
 };
