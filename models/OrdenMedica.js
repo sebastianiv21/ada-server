@@ -1,7 +1,7 @@
 import mongoose, { model, Schema } from 'mongoose';
-import mongooseSequence from 'mongoose-sequence';
+import Inc from 'mongoose-sequence';
 
-const Autoincrement = mongooseSequence(mongoose);
+const Autoincrement = Inc(mongoose);
 
 const ordenMedicaSchema = new Schema(
   {
@@ -15,10 +15,10 @@ const ordenMedicaSchema = new Schema(
       required: true,
       ref: 'Usuario',
     },
-    tipoPrueba: {
+    tipoPruebaLaboratorio: {
       type: Schema.Types.ObjectId,
       required: true,
-      ref: 'TipoPrueba',
+      ref: 'tipoPruebaLaboratorio',
     },
   },
   {
