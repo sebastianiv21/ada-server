@@ -69,8 +69,9 @@ const getMisOrdenesMedicas = async (req, res) => {
  * @access Private
  */
 const createOrdenMedica = async (req, res) => {
+  console.log('entra');
   await services.createOrdenMedica(req.body);
-
+  console.log('sale');
   return jsonResponse(
     res,
     { message: 'Orden médica creada exitosamente' },

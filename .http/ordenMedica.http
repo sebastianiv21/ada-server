@@ -18,9 +18,9 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-  "medico": "",
-  "paciente": "",
-  "tipoPrueba": ""
+  "medico": "6548d3e4cb8aa182675b1473",
+  "paciente": "6549308cf259f8c86ce76c6b",
+  "tipoPruebaLaboratorio": "65492ea1b1651a2e4cf9b234"
 }
 
 ###
