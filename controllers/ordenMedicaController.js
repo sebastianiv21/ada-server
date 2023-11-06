@@ -78,8 +78,31 @@ const createOrdenMedica = async (req, res) => {
   ); // 201 Created
 };
 
+/**
+ * @route   PUT /ordenes-medicas/:id
+ * @desc Actualiza una orden medica
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @return {Object} - Response Object
+ * @access Private
+ */
+const updateOrdenMedica = async (req, res) => {
+  const { id } = req.params;
+
+  const ordenMedica = { ...req.body };
+
+  await services.updateOrdenMedica(id.toString(), ordenMedica);
+
+  return jsonResponse(
+    res,
+    { message: 'Orden médica actualizada exitosamente' },
+    200,
+  ); // 200 OK
+};
+
 export default {
   getOrdenesMedicas,
   getMisOrdenesMedicas,
   createOrdenMedica,
+  updateOrdenMedica,
 };
