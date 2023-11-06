@@ -8,7 +8,7 @@ const router = Router();
 
 router
   .route('/')
-  .post(middleware.validLogin(schemas.loginSchema), loginLimiter, login);
+  .post(middleware.validateSchema(schemas.loginSchema), loginLimiter, login);
 
 router.route('/refresh').get(refresh);
 

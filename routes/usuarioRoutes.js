@@ -8,11 +8,15 @@ const router = Router();
 
 router.post(
   '/crear-admin',
-  middleware.validAdmin(schemas.adminSchema),
+  middleware.validateSchema(schemas.adminSchema),
   controller.createAdmin,
 );
 router.route('/').get(controller.getUsuarios);
-// .post(controller.createUsuario);
+router.post(
+  '/crear',
+  middleware.validateSchema(schemas.usuarioSchema),
+  controller.createUsuario,
+);
 
 router.use(verifyJWT);
 
