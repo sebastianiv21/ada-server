@@ -1,7 +1,4 @@
-import mongoose, { model, Schema } from 'mongoose';
-import mongooseSequence from 'mongoose-sequence';
-
-const Autoincrement = mongooseSequence(mongoose);
+import { model, Schema } from 'mongoose';
 
 const resultadoLaboratorioSchema = new Schema(
   {
@@ -19,11 +16,5 @@ const resultadoLaboratorioSchema = new Schema(
     timestamps: true,
   },
 );
-
-resultadoLaboratorioSchema.plugin(Autoincrement, {
-  inc_field: 'codigoReferencia',
-  id: 'resultadoLaboratorioNums',
-  start_seq: 1000,
-});
 
 export default model('ResultadoLaboratorio', resultadoLaboratorioSchema);

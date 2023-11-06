@@ -10,7 +10,7 @@ const findOrdenesMedicas = async (skip = 0, limit = 0) => {
   const ordenesMedicas = await OrdenMedica.find()
     .skip(skip)
     .limit(limit)
-    .populate('medico paciente tipoPrueba')
+    .populate('medico paciente tipoPruebaLaboratorio')
     .lean()
     .exec();
 
@@ -19,7 +19,7 @@ const findOrdenesMedicas = async (skip = 0, limit = 0) => {
 
 const findOrdenesMedicasPorIdPaciente = async (id, skip = 0, limit = 0) => {
   const ordenMedica = await OrdenMedica.find({ paciente: id })
-    .populate('medico paciente tipoPrueba')
+    .populate('medico paciente tipoPruebaLaboratorio')
     .skip(skip)
     .limit(limit)
     .lean()
@@ -34,7 +34,6 @@ const updateOrdenMedica = async (id, ordenMedica) => {
     ordenMedica,
     { new: true },
   )
-    .populate('medico paciente tipoPrueba')
     .lean()
     .exec();
 
