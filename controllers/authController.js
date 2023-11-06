@@ -116,7 +116,7 @@ const logout = async (req, res) => {
   const { cookies } = req;
 
   if (!cookies?.jwt) {
-    return jsonResponse(res, { message: 'No autorizado' }, 204); // no hay cookie
+    return jsonResponse(res, { message: 'No hay cookie' }, 204); // no hay cookie
   }
 
   res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
