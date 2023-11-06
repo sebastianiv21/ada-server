@@ -136,7 +136,7 @@ const updateUsuario = async (req, res) => {
   }
 
   // Actualiza el usuario
-  await services.updateUsuario(id, req.body);
+  await services.updateUsuario(id, usuarioActualizado);
 
   return jsonResponse(res, { message: 'Usuario actualizado exitosamente' });
 };
