@@ -17,6 +17,7 @@ import paramsRouter from '#routes/paramsRoutes.js';
 import lugaresRouter from '#routes/lugaresRoutes.js';
 import usuariosRouter from '#routes/usuarioRoutes.js';
 import ordenesMedicasRouter from '#routes/ordenMedicaRoutes.js';
+import sedesLaboratoriosRouter from '#routes/sedeLaboratorioRoutes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -43,6 +44,7 @@ app.use('/parametros', paramsRouter);
 app.use('/lugares', lugaresRouter);
 app.use('/usuarios', usuariosRouter);
 app.use('/ordenes-medicas', ordenesMedicasRouter);
+app.use('/sedes-laboratorios', sedesLaboratoriosRouter);
 
 app.all('*', (req, res) => {
   res.status(404);

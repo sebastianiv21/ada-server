@@ -23,7 +23,7 @@ const getOrdenesMedicas = async (req, res) => {
   if (!ordenesMedicas?.length) {
     return jsonResponse(
       res,
-      { message: 'No se encontraron ordenes medicas', ordenesMedicas },
+      { message: 'No se encontraron órdenes médicas', ordenesMedicas },
       200,
     );
   }
