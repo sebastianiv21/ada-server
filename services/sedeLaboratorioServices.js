@@ -11,7 +11,7 @@ const findSedesLaboratorio = async (skip = 0, limit = 0) => {
     .skip(skip)
     .limit(limit)
     // trae la información de los documentos referenciados, excepto la clave de los usuarios
-    .populate('municipio')
+    .populate([{ path: 'municipio', populate: [{ path: 'departamento' }] }])
     .lean()
     .exec();
 
