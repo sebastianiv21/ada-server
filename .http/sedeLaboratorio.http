@@ -24,15 +24,15 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-  "medico": "",
-  "paciente": "",
-  "tipoPrueba": ""
+  "nombre": "Sede principal",
+  "direccion": "Calle 123",
+  "municipio": "6547b48d0e7302b163fce121"
 }
 
 ###
 
 # elimina una sede de laboratorio
-DELETE {{URL}}/ordenes-medicas/65495725848846200df05f77
+DELETE {{URL}}/sedes-laboratorios/65495725848846200df05f77
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
