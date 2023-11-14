@@ -6,7 +6,7 @@ const createSedeLaboratorio = async (sedeLaboratorio) => {
   return sedeLaboratorioCreada;
 };
 
-const findSedeLaboratorio = async (skip = 0, limit = 0) => {
+const findSedesLaboratorio = async (skip = 0, limit = 0) => {
   const sedesLaboratorio = await SedeLaboratorio.find()
     .skip(skip)
     .limit(limit)
@@ -36,7 +36,7 @@ const deleteSedeLaboratorio = async (id) => {
 
 export default {
   createSedeLaboratorio,
-  findSedeLaboratorio,
+  findSedesLaboratorio,
   updateSedeLaboratorio,
   deleteSedeLaboratorio,
 };
