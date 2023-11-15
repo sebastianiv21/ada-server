@@ -5,7 +5,12 @@ const adminSchema = object({
   numeroDocumento: string().required('Ingrese su número de documento'),
   nombres: string().required('Ingrese su nombre'),
   apellidos: string().required('Ingrese sus apellidos'),
-  fechaNacimiento: date().required('Ingrese su fecha de nacimiento'),
+  fechaNacimiento: date()
+    .max(
+      new Date(),
+      'La fecha de nacimiento no puede ser mayor a la fecha actual',
+    )
+    .required('Ingrese su fecha de nacimiento'),
   genero: string().required('Seleccione el género'),
   tipoSangre: string().required('Seleccione el tipo de sangre'),
   rh: string().required('Seleccione el RH'),
