@@ -30,7 +30,7 @@ const getUsuarios = async (req, res) => {
     );
   }
 
-  return jsonResponse(res, { usuarios }, 200); // 204 No Content
+  return jsonResponse(res, { usuarios }, 200);
 };
 
 /**
