@@ -34,6 +34,25 @@ const getUsuarios = async (req, res) => {
 };
 
 /**
+ * @route   GET /usuarios/:id
+ * @desc Trae un usuario por ID
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @return {Object} - Response Object
+ */
+const getUsuarioPorId = async (req, res) => {
+  const { id } = req.params;
+
+  const usuario = await services.findUsuarioPorId(id);
+
+  if (!usuario) {
+    return jsonResponse(res, { message: 'Usuario no encontrado' }, 404); // 404 Not Found
+  }
+
+  return jsonResponse(res, { usuario }, 200);
+};
+
+/**
  * @route   POST /users/crear
  * @desc Crea un usuario
  * @param {Object} req - Request Object
@@ -240,6 +259,7 @@ const createAdmin = async (req, res) => {
 export default {
   createAdmin,
   getUsuarios,
+  getUsuarioPorId,
   createUsuario,
   updateUsuario,
   deleteUsuario,
