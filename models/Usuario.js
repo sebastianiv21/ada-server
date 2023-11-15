@@ -82,8 +82,10 @@ const usuarioSchema = new Schema(
     },
     // Información de contacto
     contacto: {
-      type: Schema.Types.ObjectId,
-      ref: 'ContactoUsuario',
+      nombres: String,
+      apellidos: String,
+      parentesco: String,
+      telefono: Number,
     },
   },
   {

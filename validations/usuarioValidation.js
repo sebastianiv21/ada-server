@@ -27,6 +27,17 @@ const adminSchema = object({
 
 const usuarioSchema = adminSchema.shape({
   rol: string().required('Seleccione el rol'),
+  estadoCivil: string(),
+  eps: string(),
+  telefono2: number(),
+  direccion: string(),
+  municipio: string(),
+  contacto: object({
+    nombres: string(),
+    apellidos: string(),
+    parentesco: string(),
+    telefono: number(),
+  }),
 });
 
 const loginSchema = object({
