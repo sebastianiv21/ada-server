@@ -25,6 +25,7 @@ router.post(
 
 router
   .route('/:id')
+  .get(controller.getUsuarioPorId)
   .put(controller.updateUsuario)
   .delete(controller.deleteUsuario);
 
