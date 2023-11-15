@@ -19,6 +19,7 @@ import usuariosRouter from '#routes/usuarioRoutes.js';
 import ordenesMedicasRouter from '#routes/ordenMedicaRoutes.js';
 import sedesLaboratoriosRouter from '#routes/sedeLaboratorioRoutes.js';
 import citasLaboratorioRouter from '#routes/citaLaboratorioRoutes.js';
+import resultadosLaboratorioRouter from '#routes/resultadoLaboratorioRoutes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -47,6 +48,7 @@ app.use('/usuarios', usuariosRouter);
 app.use('/ordenes-medicas', ordenesMedicasRouter);
 app.use('/sedes-laboratorios', sedesLaboratoriosRouter);
 app.use('/citas-laboratorio', citasLaboratorioRouter);
+app.use('/resultados-laboratorio', resultadosLaboratorioRouter);
 
 app.all('*', (req, res) => {
   res.status(404);
