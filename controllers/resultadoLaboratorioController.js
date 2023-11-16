@@ -1,4 +1,4 @@
-import { jsonResponse } from '#utils';
+import { getPaginatedItems, jsonResponse } from '#utils';
 
 import services from '#services/resultadoLaboratorioServices.js';
 
@@ -13,25 +13,17 @@ import services from '#services/resultadoLaboratorioServices.js';
  * @access Private
  */
 const getResultadosLaboratorio = async (req, res) => {
-  const { skip, limit } = req.query;
+  const { page = 1, pageSize = 10 } = req.query;
 
-  const resultadosLaboratorio = await services.findResultadosLaboratorio(
-    Number(skip),
-    Number(limit),
-  );
+  // obtiene los resultados de laboratorio paginados
+  const resultadosLaboratorioResponse = await getPaginatedItems({
+    page: Number(page),
+    pageSize: Number(pageSize),
+    findItems: services.findResultadosLaboratorio,
+    countItems: services.countResultadosLaboratorio,
+  });
 
-  if (!resultadosLaboratorio?.length) {
-    return jsonResponse(
-      res,
-      {
-        message: 'No se encontraron resultados de laboratorio',
-        resultadosLaboratorio,
-      },
-      404,
-    );
-  }
-
-  return jsonResponse(res, { resultadosLaboratorio }, 200);
+  return jsonResponse(res, resultadosLaboratorioResponse, 200);
 };
 
 /**
@@ -71,27 +63,18 @@ const getResultadoLaboratorioPorId = async (req, res) => {
  */
 const getMisResultadosLaboratorio = async (req, res) => {
   const { id } = req.id;
-  const { skip, limit } = req.query;
+  const { page = 1, pageSize = 10 } = req.query;
 
-  const resultadosLaboratorio =
-    await services.findResultadosLaboratorioPorIdPaciente(
-      id.toString(),
-      Number(skip),
-      Number(limit),
-    );
+  // obtiene los resultados de laboratorio paginados de un paciente autenticado
+  const misResultadosLaboratorioResponse = await getPaginatedItems({
+    page: Number(page),
+    pageSize: Number(pageSize),
+    findItems: services.findResultadosLaboratorio,
+    countItems: services.countResultadosLaboratorio,
+    filter: { paciente: id.toString() },
+  });
 
-  if (!resultadosLaboratorio?.length) {
-    return jsonResponse(
-      res,
-      {
-        message: 'No se encontraron resultados de laboratorio',
-        resultadosLaboratorio,
-      },
-      404,
-    );
-  }
-
-  return jsonResponse(res, { resultadosLaboratorio }, 200);
+  return jsonResponse(res, misResultadosLaboratorioResponse, 200);
 };
 
 /**

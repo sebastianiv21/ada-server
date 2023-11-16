@@ -6,7 +6,7 @@ const createOrdenMedica = async (ordenMedica) => {
   return ordenMedicaCreada;
 };
 
-const findOrdenesMedicas = async (skip = 0, limit = 0) => {
+const findOrdenesMedicas = async (skip = 0, limit = 0, filter = {}) => {
   const ordenesMedicas = await OrdenMedica.find()
     .skip(skip)
     .limit(limit)
@@ -18,6 +18,12 @@ const findOrdenesMedicas = async (skip = 0, limit = 0) => {
   return ordenesMedicas;
 };
 
+const countOrdenesMedicas = async () => {
+  const totalOrdenesMedicas = await OrdenMedica.countDocuments();
+
+  return totalOrdenesMedicas;
+};
+
 const findOrdenMedicaPorId = async (id) => {
   const ordenMedica = await OrdenMedica.findById(id)
     .populate('medico paciente tipoPruebaLaboratorio', '-clave')
@@ -25,18 +31,6 @@ const findOrdenMedicaPorId = async (id) => {
     .exec();
 
   return ordenMedica;
-};
-
-const findOrdenesMedicasPorIdPaciente = async (id, skip = 0, limit = 0) => {
-  const ordenesMedicas = await OrdenMedica.find({ paciente: id })
-    // trae la información de los documentos referenciados, excepto la clave de los usuarios
-    .populate('medico paciente tipoPruebaLaboratorio', '-clave')
-    .skip(skip)
-    .limit(limit)
-    .lean()
-    .exec();
-
-  return ordenesMedicas;
 };
 
 const updateOrdenMedica = async (id, ordenMedica) => {
@@ -58,8 +52,8 @@ const deleteOrdenMedica = async (id) => {
 export default {
   createOrdenMedica,
   findOrdenesMedicas,
+  countOrdenesMedicas,
   findOrdenMedicaPorId,
-  findOrdenesMedicasPorIdPaciente,
   updateOrdenMedica,
   deleteOrdenMedica,
 };
