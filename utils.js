@@ -45,3 +45,15 @@ export const sendEmail = async (emailConfig) => {
 
   return emailInfo;
 };
+
+/**
+ * @desc    Paginación
+ * @param   {Number} page
+ * @param   {Number} pageSize
+ * @returns {Object}
+ */
+export const getPaginationValues = (page, pageSize) => {
+  const skip = (page - 1) * pageSize;
+
+  return { skip, limit: pageSize };
+};
