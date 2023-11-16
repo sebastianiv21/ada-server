@@ -71,11 +71,12 @@ export const getPaginatedItems = async ({
   pageSize,
   findItems,
   countItems,
+  filter = {},
 }) => {
   const { skip, limit } = getPaginationValues(page, pageSize);
 
   // Trae los items
-  const items = await findItems(skip, limit);
+  const items = await findItems(skip, limit, filter);
 
   // cuenta los items
   const totalItems = await countItems();

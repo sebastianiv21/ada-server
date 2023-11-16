@@ -8,8 +8,8 @@ const createResultadoLaboratorio = async (resultadoLaboratorio) => {
   return resultadoLaboratorioCreado;
 };
 
-const findResultadosLaboratorio = async (skip = 0, limit = 0) => {
-  const resultadosLaboratorio = await ResultadoLaboratorio.find()
+const findResultadosLaboratorio = async (skip = 0, limit = 0, filter = {}) => {
+  const resultadosLaboratorio = await ResultadoLaboratorio.find(filter)
     .skip(skip)
     .limit(limit)
     // trae la información de los documentos referenciados
@@ -18,6 +18,13 @@ const findResultadosLaboratorio = async (skip = 0, limit = 0) => {
     .exec();
 
   return resultadosLaboratorio;
+};
+
+const countResultadosLaboratorio = async () => {
+  const totalResultadosLaboratorio =
+    await ResultadoLaboratorio.countDocuments();
+
+  return totalResultadosLaboratorio;
 };
 
 const findResultadoLaboratorioPorId = async (id) => {
@@ -28,24 +35,6 @@ const findResultadoLaboratorioPorId = async (id) => {
     .exec();
 
   return resultadoLaboratorio;
-};
-
-const findResultadosLaboratorioPorIdPaciente = async (
-  id,
-  skip = 0,
-  limit = 0,
-) => {
-  const resultadosLaboratorio = await ResultadoLaboratorio.find({
-    paciente: id,
-  })
-    // trae la información de los documentos referenciados
-    .populate('citaLaboratorio')
-    .skip(skip)
-    .limit(limit)
-    .lean()
-    .exec();
-
-  return resultadosLaboratorio;
 };
 
 const updateResultadoLaboratorio = async (id, resultadoLaboratorio) => {
@@ -66,8 +55,8 @@ const deleteResultadoLaboratorio = async (id) => {
 export default {
   createResultadoLaboratorio,
   findResultadosLaboratorio,
+  countResultadosLaboratorio,
   findResultadoLaboratorioPorId,
-  findResultadosLaboratorioPorIdPaciente,
   updateResultadoLaboratorio,
   deleteResultadoLaboratorio,
 };

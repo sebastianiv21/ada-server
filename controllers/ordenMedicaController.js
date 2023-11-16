@@ -1,4 +1,4 @@
-import { jsonResponse } from '#utils';
+import { getPaginatedItems, jsonResponse } from '#utils';
 
 import services from '#services/ordenMedicaServices.js';
 
@@ -13,22 +13,17 @@ import services from '#services/ordenMedicaServices.js';
  * @access Private
  */
 const getOrdenesMedicas = async (req, res) => {
-  const { skip, limit } = req.query;
+  const { page = 1, pageSize = 10 } = req.query;
 
-  const ordenesMedicas = await services.findOrdenesMedicas(
-    Number(skip),
-    Number(limit),
-  );
+  // obtiene las ordenes medicas paginadas
+  const ordenesMedicasResponse = await getPaginatedItems({
+    page: Number(page),
+    pageSize: Number(pageSize),
+    findItems: services.findOrdenesMedicas,
+    countItems: services.countOrdenesMedicas,
+  });
 
-  if (!ordenesMedicas?.length) {
-    return jsonResponse(
-      res,
-      { message: 'No se encontraron órdenes médicas', ordenesMedicas },
-      404,
-    );
-  }
-
-  return jsonResponse(res, { ordenesMedicas }, 200);
+  return jsonResponse(res, ordenesMedicasResponse, 200);
 };
 
 /**
@@ -66,23 +61,18 @@ const getOrdenMedicaPorId = async (req, res) => {
  */
 const getMisOrdenesMedicas = async (req, res) => {
   const { id } = req.id;
-  const { skip, limit } = req.query;
+  const { page = 1, pageSize = 10 } = req.query;
 
-  const ordenesMedicas = await services.findOrdenesMedicasPorIdPaciente(
-    id.toString(),
-    Number(skip),
-    Number(limit),
-  );
+  // obtiene las ordenes medicas paginadas de un paciente autenticado
+  const misOrdenesMedicasResponse = await getPaginatedItems({
+    page: Number(page),
+    pageSize: Number(pageSize),
+    findItems: services.findResultadosLaboratorio,
+    countItems: services.countResultadosLaboratorio,
+    filter: { paciente: id.toString() },
+  });
 
-  if (!ordenesMedicas?.length) {
-    return jsonResponse(
-      res,
-      { message: 'No se encontraron ordenes medicas', ordenesMedicas },
-      404,
-    );
-  }
-
-  return jsonResponse(res, { ordenesMedicas }, 200);
+  return jsonResponse(res, misOrdenesMedicasResponse, 200);
 };
 
 /**

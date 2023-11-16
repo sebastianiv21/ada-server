@@ -7,8 +7,8 @@ const createUsuario = async (usuario) => {
   return usuarioCreado;
 };
 
-const findUsuarios = async (skip = 0, limit = 0) => {
-  const usuarios = await Usuario.find()
+const findUsuarios = async (skip = 0, limit = 0, filter = {}) => {
+  const usuarios = await Usuario.find(filter)
     .select('-clave')
     .skip(skip)
     .limit(limit)

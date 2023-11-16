@@ -6,8 +6,8 @@ const createSedeLaboratorio = async (sedeLaboratorio) => {
   return sedeLaboratorioCreada;
 };
 
-const findSedesLaboratorio = async (skip = 0, limit = 0) => {
-  const sedesLaboratorio = await SedeLaboratorio.find()
+const findSedesLaboratorio = async (skip = 0, limit = 0, filter = {}) => {
+  const sedesLaboratorio = await SedeLaboratorio.find(filter)
     .skip(skip)
     .limit(limit)
     // trae la información de los documentos referenciados, excepto la clave de los usuarios
