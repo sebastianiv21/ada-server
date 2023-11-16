@@ -1,4 +1,4 @@
-import { jsonResponse } from '#utils';
+import { getPaginatedItems, jsonResponse } from '#utils';
 
 import services from '#services/citaLaboratorioServices.js';
 
@@ -13,22 +13,17 @@ import services from '#services/citaLaboratorioServices.js';
  * @access Private
  */
 const getCitasLaboratorio = async (req, res) => {
-  const { skip, limit } = req.query;
+  const { page = 1, pageSize = 10 } = req.query;
 
-  const citasLaboratorio = await services.findCitasLaboratorio(
-    Number(skip),
-    Number(limit),
-  );
+  // obtiene las citas de laboratorio paginadas
+  const citasLaboratorioResponse = await getPaginatedItems({
+    page: Number(page),
+    pageSize: Number(pageSize),
+    findItems: services.findCitassLaboratorio,
+    countItems: services.countCitasLaboratorio,
+  });
 
-  if (!citasLaboratorio?.length) {
-    return jsonResponse(
-      res,
-      { message: 'No se encontraron citas de laboratorio', citasLaboratorio },
-      404,
-    );
-  }
-
-  return jsonResponse(res, { citasLaboratorio }, 200);
+  return jsonResponse(res, citasLaboratorioResponse, 200);
 };
 
 /**
@@ -41,23 +36,18 @@ const getCitasLaboratorio = async (req, res) => {
  */
 const getMisCitasLaboratorio = async (req, res) => {
   const { id } = req.id;
-  const { skip, limit } = req.query;
+  const { page = 1, pageSize = 10 } = req.query;
 
-  const citasLaboratorio = await services.findCitasLaboratorioPorIdPaciente(
-    id.toString(),
-    Number(skip),
-    Number(limit),
-  );
+  // obtiene las citas de laboratorio paginadas de un paciente autenticado
+  const citasLaboratorioResponse = await getPaginatedItems({
+    page: Number(page),
+    pageSize: Number(pageSize),
+    findItems: services.findCitassLaboratorio,
+    countItems: services.countCitasLaboratorio,
+    filter: { paciente: id.toString() },
+  });
 
-  if (!citasLaboratorio?.length) {
-    return jsonResponse(
-      res,
-      { message: 'No se encontraron citas de laboratorio', citasLaboratorio },
-      404,
-    );
-  }
-
-  return jsonResponse(res, { citasLaboratorio }, 200);
+  return jsonResponse(res, citasLaboratorioResponse, 200);
 };
 
 /**
