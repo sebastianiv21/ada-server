@@ -1,4 +1,4 @@
-import ResetToken from '#models/ResetToken';
+import ResetToken from '#models/ResetToken.js';
 
 const createResetToken = async (resetToken) => {
   await ResetToken.create(resetToken);
