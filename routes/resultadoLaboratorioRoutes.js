@@ -22,6 +22,7 @@ router.post(
 
 router
   .route('/:id')
+  .get(controller.getResultadoLaboratorioPorId)
   .put(controller.updateResultadoLaboratorio)
   .delete(controller.deleteResultadoLaboratorio);
 

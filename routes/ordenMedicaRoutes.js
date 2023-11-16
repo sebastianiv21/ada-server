@@ -22,6 +22,7 @@ router.post(
 
 router
   .route('/:id')
+  .get(controller.getOrdenMedicaPorId)
   .put(controller.updateOrdenMedica)
   .delete(controller.deleteOrdenMedica);
 

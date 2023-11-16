@@ -24,7 +24,7 @@ const getCitasLaboratorio = async (req, res) => {
     return jsonResponse(
       res,
       { message: 'No se encontraron citas de laboratorio', citasLaboratorio },
-      200,
+      404,
     );
   }
 
@@ -53,7 +53,7 @@ const getMisCitasLaboratorio = async (req, res) => {
     return jsonResponse(
       res,
       { message: 'No se encontraron citas de laboratorio', citasLaboratorio },
-      200,
+      404,
     );
   }
 

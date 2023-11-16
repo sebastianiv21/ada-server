@@ -27,11 +27,38 @@ const getResultadosLaboratorio = async (req, res) => {
         message: 'No se encontraron resultados de laboratorio',
         resultadosLaboratorio,
       },
-      200,
+      404,
     );
   }
 
   return jsonResponse(res, { resultadosLaboratorio }, 200);
+};
+
+/**
+ * @route GET /resultados-laboratorio/:id
+ * @desc Trae un resultado de laboratorio por id
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {String} req.params.id - Id del resultado de laboratorio
+ * @return {Object} - Response Object
+ * @access Private
+ */
+const getResultadoLaboratorioPorId = async (req, res) => {
+  const { id } = req.params;
+
+  const resultadoLaboratorio = await services.findResultadoLaboratorioPorId(
+    id.toString(),
+  );
+
+  if (!resultadoLaboratorio) {
+    return jsonResponse(
+      res,
+      { message: 'No se encontró el resultado de laboratorio' },
+      404,
+    );
+  }
+
+  return jsonResponse(res, { resultadoLaboratorio }, 200);
 };
 
 /**
@@ -60,7 +87,7 @@ const getMisResultadosLaboratorio = async (req, res) => {
         message: 'No se encontraron resultados de laboratorio',
         resultadosLaboratorio,
       },
-      200,
+      404,
     );
   }
 
@@ -133,6 +160,7 @@ const deleteResultadoLaboratorio = async (req, res) => {
 export default {
   getResultadosLaboratorio,
   getMisResultadosLaboratorio,
+  getResultadoLaboratorioPorId,
   createResultadoLaboratorio,
   updateResultadoLaboratorio,
   deleteResultadoLaboratorio,

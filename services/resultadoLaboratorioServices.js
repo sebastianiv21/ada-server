@@ -20,6 +20,16 @@ const findResultadosLaboratorio = async (skip = 0, limit = 0) => {
   return resultadosLaboratorio;
 };
 
+const findResultadoLaboratorioPorId = async (id) => {
+  const resultadoLaboratorio = await ResultadoLaboratorio.findById(id)
+    // trae la información de los documentos referenciados
+    .populate('citaLaboratorio')
+    .lean()
+    .exec();
+
+  return resultadoLaboratorio;
+};
+
 const findResultadosLaboratorioPorIdPaciente = async (
   id,
   skip = 0,
@@ -56,6 +66,7 @@ const deleteResultadoLaboratorio = async (id) => {
 export default {
   createResultadoLaboratorio,
   findResultadosLaboratorio,
+  findResultadoLaboratorioPorId,
   findResultadosLaboratorioPorIdPaciente,
   updateResultadoLaboratorio,
   deleteResultadoLaboratorio,

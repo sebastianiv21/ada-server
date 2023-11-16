@@ -19,7 +19,7 @@ const getUsuarios = async (req, res) => {
 
   // busca un usuario por número de documento si se envía el query param 'numeroDocumento'
   if (numeroDocumento) {
-    const usuario = await services.findUsuarioDuplicado(
+    const usuario = await services.findUsuarioExistente(
       numeroDocumento.toString(),
     );
 
@@ -45,7 +45,7 @@ const getUsuarios = async (req, res) => {
         message: 'No se encontraron usuarios',
         usuarios,
       },
-      200,
+      404,
     );
   }
 
@@ -98,7 +98,7 @@ const createUsuario = async (req, res) => {
     ); // 400 Bad Request
   }
 
-  const duplicado = await services.findUsuarioDuplicado(
+  const duplicado = await services.findUsuarioExistente(
     numeroDocumento.toString(),
     email.toString(),
   );
@@ -149,7 +149,7 @@ const updateUsuario = async (req, res) => {
 
   const { numeroDocumento, email, clave, fechaNacimiento } = req.body;
 
-  const duplicado = await services.findUsuarioDuplicado(
+  const duplicado = await services.findUsuarioExistente(
     numeroDocumento.toString(),
     email.toString(),
   );
@@ -231,7 +231,7 @@ const createAdmin = async (req, res) => {
 
   const { numeroDocumento, email, clave, fechaNacimiento } = req.body;
 
-  const duplicado = await services.findUsuarioDuplicado(
+  const duplicado = await services.findUsuarioExistente(
     numeroDocumento.toString(),
     email.toString(),
   );
