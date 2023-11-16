@@ -1,4 +1,4 @@
-import { jsonResponse } from '#utils';
+import { getPaginationValues, jsonResponse } from '#utils';
 
 import services from '#services/sedeLaboratorioServices.js';
 
@@ -13,22 +13,28 @@ import services from '#services/sedeLaboratorioServices.js';
  * @access Private
  */
 const getSedesLaboratorio = async (req, res) => {
-  const { skip, limit } = req.query;
+  const { page = 1, pageSize = 10 } = req.query;
 
-  const sedesLaboratorio = await services.findSedesLaboratorio(
-    Number(skip),
-    Number(limit),
-  );
+  // Obtener valores de skip y limit
+  const pageNumber = Number(page);
+  const pageSizeNumber = Number(pageSize);
 
-  if (!sedesLaboratorio?.length) {
-    return jsonResponse(
-      res,
-      { message: 'No se encontraron sedes de laboratorio', sedesLaboratorio },
-      404,
-    );
-  }
+  const { skip, limit } = getPaginationValues(pageNumber, pageSizeNumber);
 
-  return jsonResponse(res, { sedesLaboratorio }, 200);
+  // Trae las sedes de laboratorio
+  const sedesLaboratorio = await services.findSedesLaboratorio(skip, limit);
+
+  // cuenta las sedes de laboratorio
+  const totalSedesLaboratorio = await services.countUsuarios();
+
+  const sedesLaboratorioResponse = {
+    data: sedesLaboratorio,
+    totalItems: totalSedesLaboratorio,
+    totalPages: Math.ceil(totalSedesLaboratorio / limit),
+    currentPage: pageNumber,
+  };
+
+  return jsonResponse(res, sedesLaboratorioResponse, 200);
 };
 
 /**
