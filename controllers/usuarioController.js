@@ -15,7 +15,26 @@ import paramsServices from '#services/paramsServices.js';
  * @return {Object} - Response Object
  */
 const getUsuarios = async (req, res) => {
-  const { skip, limit } = req.query;
+  const { skip, limit, numeroDocumento } = req.query;
+
+  // busca un usuario por número de documento si se envía el query param 'numeroDocumento'
+  if (numeroDocumento) {
+    const usuario = await services.findUsuarioDuplicado(
+      numeroDocumento.toString(),
+    );
+
+    if (!usuario) {
+      return jsonResponse(
+        res,
+        {
+          message: 'Usuario no encontrado',
+        },
+        404,
+      ); // 404 Not Found
+    }
+
+    return jsonResponse(res, { usuario }, 200);
+  }
 
   const usuarios = await services.findUsuarios(Number(skip), Number(limit));
 
