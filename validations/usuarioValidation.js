@@ -40,10 +40,13 @@ const usuarioSchema = adminSchema.shape({
   }),
 });
 
-const loginSchema = object({
+const recuperarClaveSchema = object({
   email: string()
     .email('Ingrese un email válido')
     .required('El email es requerido'),
+});
+
+const loginSchema = recuperarClaveSchema.shape({
   clave: string()
     .required('La clave es requerida')
     .min(6, 'La clave debe tener al menos 6 caracteres')
@@ -51,4 +54,9 @@ const loginSchema = object({
     .trim(),
 });
 
-export default { adminSchema, usuarioSchema, loginSchema };
+export default {
+  adminSchema,
+  usuarioSchema,
+  loginSchema,
+  recuperarClaveSchema,
+};
