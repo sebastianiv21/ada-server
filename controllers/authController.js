@@ -2,12 +2,14 @@ import { compare } from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 import usuarioServices from '#services/usuarioServices.js';
+import resetTokenServices from '#services/resetTokenServices.js';
 import { jsonResponse } from '#utils';
 
 // variables de entorno
 const {
   ACCESS_TOKEN_SECRET,
   REFRESH_TOKEN_SECRET,
+  PASSWORD_CHANGE_TOKEN_SECRET,
   NODEMAILER_EMAIL,
   NODEMAILER_API_KEY,
 } = process.env;
@@ -166,20 +168,32 @@ const recuperarClave = async (req, res) => {
     );
   }
 
-  const token = jwt.sign({ email }, REFRESH_TOKEN_SECRET, {
-    expiresIn: EXPIRATION_TIME.PASSWORD_CHANGE_TOKEN,
-  });
+  // Generar token de cambio de contraseña
+  const token = jwt.sign(
+    { idUsuario: usuarioEncontrado._id },
+    PASSWORD_CHANGE_TOKEN_SECRET,
+    {
+      expiresIn: EXPIRATION_TIME.PASSWORD_CHANGE_TOKEN,
+    },
+  );
+
+  // Guardar token en la base de datos
+  const nuevoResetToken = {
+    usuario: usuarioEncontrado._id.toString(),
+    token: token.toString(),
+  };
+
+  await resetTokenServices.createResetToken(nuevoResetToken);
 
   const url = `https://www.brevo.com.co/recuperarClave/${token}`;
 
   const mailOptions = {
     from: NODEMAILER_EMAIL,
     to: email,
-    subject: 'ADA HEALTH LABS - Recuperación de contraseña',
+    subject: 'ADA HEALTH LABS 🫁 - Recuperación de contraseña',
     html: `
       <h1>Recuperación de contraseña</h1>
-      <p>Para cambiar tu contraseña, haz click en el siguiente enlace:</p>
-      <a href="${url}">${url}</a>
+      <p>Para cambiar tu contraseña, haz click <a href="${url}">aquí</a></p>
     `,
   };
 
