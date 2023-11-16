@@ -1,4 +1,4 @@
-import { getPaginationValues, jsonResponse } from '#utils';
+import { getPaginatedItems, jsonResponse } from '#utils';
 
 import services from '#services/sedeLaboratorioServices.js';
 
@@ -15,24 +15,13 @@ import services from '#services/sedeLaboratorioServices.js';
 const getSedesLaboratorio = async (req, res) => {
   const { page = 1, pageSize = 10 } = req.query;
 
-  // Obtener valores de skip y limit
-  const pageNumber = Number(page);
-  const pageSizeNumber = Number(pageSize);
-
-  const { skip, limit } = getPaginationValues(pageNumber, pageSizeNumber);
-
-  // Trae las sedes de laboratorio
-  const sedesLaboratorio = await services.findSedesLaboratorio(skip, limit);
-
-  // cuenta las sedes de laboratorio
-  const totalSedesLaboratorio = await services.countUsuarios();
-
-  const sedesLaboratorioResponse = {
-    data: sedesLaboratorio,
-    totalItems: totalSedesLaboratorio,
-    totalPages: Math.ceil(totalSedesLaboratorio / limit),
-    currentPage: pageNumber,
-  };
+  // obtiene las sedes de laboratorio paginadas
+  const sedesLaboratorioResponse = await getPaginatedItems({
+    page: Number(page),
+    pageSize: Number(pageSize),
+    findItems: services.findSedesLaboratorio,
+    countItems: services.countSedesLaboratorio,
+  });
 
   return jsonResponse(res, sedesLaboratorioResponse, 200);
 };

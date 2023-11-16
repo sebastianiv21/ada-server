@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { parseISO } from 'date-fns';
-import { getPaginationValues, jsonResponse } from '#utils';
+import { getPaginatedItems, jsonResponse } from '#utils';
 
 import services from '#services/usuarioServices.js';
 import paramsServices from '#services/paramsServices.js';
@@ -36,24 +36,13 @@ const getUsuarios = async (req, res) => {
     return jsonResponse(res, usuario, 200);
   }
 
-  // Obtener valores de skip y limit
-  const pageNumber = Number(page);
-  const pageSizeNumber = Number(pageSize);
-
-  const { skip, limit } = getPaginationValues(pageNumber, pageSizeNumber);
-
-  // Trae los usuarios
-  const usuarios = await services.findUsuarios(skip, limit);
-
-  // cuenta los usuarios
-  const totalUsuarios = await services.countUsuarios();
-
-  const usuariosResponse = {
-    data: usuarios,
-    totalItems: totalUsuarios,
-    totalPages: Math.ceil(totalUsuarios / limit),
-    currentPage: pageNumber,
-  };
+  // obtiene los usuarios paginados
+  const usuariosResponse = await getPaginatedItems({
+    page: Number(page),
+    pageSize: Number(pageSize),
+    findItems: services.findUsuarios,
+    countItems: services.countUsuarios,
+  });
 
   return jsonResponse(res, usuariosResponse, 200);
 };
