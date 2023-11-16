@@ -1,9 +1,8 @@
 import { compare } from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import nodemailer from 'nodemailer';
 import usuarioServices from '#services/usuarioServices.js';
 import resetTokenServices from '#services/resetTokenServices.js';
-import { jsonResponse } from '#utils';
+import { jsonResponse, sendEmail } from '#utils';
 
 // variables de entorno
 const {
@@ -11,20 +10,8 @@ const {
   REFRESH_TOKEN_SECRET,
   PASSWORD_CHANGE_TOKEN_SECRET,
   NODEMAILER_EMAIL,
-  NODEMAILER_API_KEY,
   PORT,
 } = process.env;
-
-// nodemailer transporter
-const transporter = nodemailer.createTransport({
-  host: 'smtp-relay.brevo.com',
-  port: 587,
-  secure: false, // true for 465, false for other ports
-  auth: {
-    user: NODEMAILER_EMAIL,
-    pass: NODEMAILER_API_KEY,
-  },
-});
 
 // tiempo de expiracion de los tokens
 const EXPIRATION_TIME = Object.freeze({
@@ -191,27 +178,32 @@ const recuperarClave = async (req, res) => {
 
   const url = `https://${dominio}/recuperar-clave/${token}`;
 
-  const mailOptions = {
-    from: NODEMAILER_EMAIL,
+  const emailMessage = `
+    <h1>Recuperación de contraseña</h1>
+    <p>Para cambiar tu contraseña, haz click <a href="${url}">aquí</a></p>
+  `;
+
+  const emailConfig = {
     to: email,
-    subject: 'ADA HEALTH LABS 🫁 - Recuperación de contraseña',
-    html: `
-      <h1>Recuperación de contraseña</h1>
-      <p>Para cambiar tu contraseña, haz click <a href="${url}">aquí</a></p>
-    `,
+    subject: 'Recuperación de contraseña',
+    message: emailMessage,
   };
 
-  transporter.sendMail(mailOptions, (err) => {
-    if (err) {
-      return jsonResponse(res, { message: 'Error al enviar el correo' }, 500);
-    }
+  const emailInfo = await sendEmail(emailConfig);
 
+  if (!emailInfo) {
     return jsonResponse(
       res,
-      { message: 'Correo de recuperación enviado' },
-      200,
+      {
+        message: 'Error al enviar el correo',
+      },
+      500,
     );
-  });
+  }
+
+  console.log('Email enviado:', emailInfo.messageId);
+
+  return jsonResponse(res, { message: 'Correo de recuperación enviado' }, 200);
 };
 
 export { login, logout, recuperarClave, refresh };
