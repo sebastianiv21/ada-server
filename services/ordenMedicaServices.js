@@ -7,7 +7,7 @@ const createOrdenMedica = async (ordenMedica) => {
 };
 
 const findOrdenesMedicas = async (skip = 0, limit = 0, filter = {}) => {
-  const ordenesMedicas = await OrdenMedica.find()
+  const ordenesMedicas = await OrdenMedica.find(filter)
     .skip(skip)
     .limit(limit)
     // trae la información de los documentos referenciados, excepto la clave de los usuarios
