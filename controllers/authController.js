@@ -9,7 +9,7 @@ const {
   ACCESS_TOKEN_SECRET,
   REFRESH_TOKEN_SECRET,
   PASSWORD_CHANGE_TOKEN_SECRET,
-  PORT,
+  APP_URL,
 } = process.env;
 
 // tiempo de expiracion de los tokens
@@ -173,9 +173,7 @@ const recuperarClave = async (req, res) => {
   await resetTokenServices.createResetToken(nuevoResetToken);
 
   // Enviar correo
-  const dominio = PORT ? `localhost:${PORT}` : 'adahealthlabs.com';
-
-  const url = `https://${dominio}/cambiar-clave/${token}`;
+  const url = `${APP_URL}/cambiar-clave/${token}`;
 
   const emailMessage = `
     <h1>Recuperación de contraseña</h1>
