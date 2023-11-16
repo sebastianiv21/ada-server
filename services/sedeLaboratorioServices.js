@@ -18,6 +18,12 @@ const findSedesLaboratorio = async (skip = 0, limit = 0) => {
   return sedesLaboratorio;
 };
 
+const countSedesLaboratorio = async () => {
+  const totalSedesLaboratorio = await SedeLaboratorio.countDocuments();
+
+  return totalSedesLaboratorio;
+};
+
 const updateSedeLaboratorio = async (id, sedeLaboratorio) => {
   const sedeLaboratorioActualizada = await SedeLaboratorio.findByIdAndUpdate(
     id,
@@ -37,6 +43,7 @@ const deleteSedeLaboratorio = async (id) => {
 export default {
   createSedeLaboratorio,
   findSedesLaboratorio,
+  countSedesLaboratorio,
   updateSedeLaboratorio,
   deleteSedeLaboratorio,
 };
