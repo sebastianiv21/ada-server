@@ -1,12 +1,33 @@
 import { compare } from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import nodemailer from 'nodemailer';
 import usuarioServices from '#services/usuarioServices.js';
 import { jsonResponse } from '#utils';
+
+// variables de entorno
+const {
+  ACCESS_TOKEN_SECRET,
+  REFRESH_TOKEN_SECRET,
+  NODEMAILER_EMAIL,
+  NODEMAILER_API_KEY,
+} = process.env;
+
+// nodemailer transporter
+const transporter = nodemailer.createTransport({
+  host: 'smtp-relay.brevo.com',
+  port: 587,
+  secure: false, // true for 465, false for other ports
+  auth: {
+    user: NODEMAILER_EMAIL,
+    pass: NODEMAILER_API_KEY,
+  },
+});
 
 // tiempo de expiracion de los tokens
 const EXPIRATION_TIME = Object.freeze({
   ACCESS_TOKEN: '1m',
   REFRESH_TOKEN: '1d',
+  PASSWORD_CHANGE_TOKEN: '1h',
   JWT: 7 * 24 * 60 * 60 * 1000, // 7 dias
 });
 
@@ -39,13 +60,13 @@ const login = async (req, res) => {
         id: usuarioEncontrado._id,
       },
     },
-    process.env.ACCESS_TOKEN_SECRET,
+    ACCESS_TOKEN_SECRET,
     { expiresIn: EXPIRATION_TIME.ACCESS_TOKEN },
   );
 
   const refreshToken = jwt.sign(
     { email: usuarioEncontrado.email },
-    process.env.REFRESH_TOKEN_SECRET,
+    REFRESH_TOKEN_SECRET,
     { expiresIn: EXPIRATION_TIME.REFRESH_TOKEN },
   );
 
@@ -76,37 +97,33 @@ const refresh = async (req, res) => {
   const refreshToken = cookies.jwt;
 
   // verifica que el token sea valido
-  jwt.verify(
-    refreshToken,
-    process.env.REFRESH_TOKEN_SECRET,
-    async (err, decoded) => {
-      if (err) return jsonResponse(res, { message: 'No autorizado' }, 403);
+  jwt.verify(refreshToken, REFRESH_TOKEN_SECRET, async (err, decoded) => {
+    if (err) return jsonResponse(res, { message: 'No autorizado' }, 403);
 
-      const usuarioEncontrado = await usuarioServices.findUsuarioPorEmail(
-        decoded.email,
-      );
+    const usuarioEncontrado = await usuarioServices.findUsuarioPorEmail(
+      decoded.email,
+    );
 
-      if (!usuarioEncontrado) {
-        return jsonResponse(res, { message: 'No autorizado' }, 401);
-      }
+    if (!usuarioEncontrado) {
+      return jsonResponse(res, { message: 'No autorizado' }, 401);
+    }
 
-      // Generar tokens
-      const accessToken = jwt.sign(
-        {
-          infoUsuario: {
-            email: usuarioEncontrado.email,
-            rol: usuarioEncontrado.rol,
-            id: usuarioEncontrado._id,
-          },
+    // Generar tokens
+    const accessToken = jwt.sign(
+      {
+        infoUsuario: {
+          email: usuarioEncontrado.email,
+          rol: usuarioEncontrado.rol,
+          id: usuarioEncontrado._id,
         },
-        process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: EXPIRATION_TIME.ACCESS_TOKEN },
-      );
+      },
+      ACCESS_TOKEN_SECRET,
+      { expiresIn: EXPIRATION_TIME.ACCESS_TOKEN },
+    );
 
-      // envia accessToken
-      return jsonResponse(res, { accessToken }, 200);
-    },
-  );
+    // envia accessToken
+    return jsonResponse(res, { accessToken }, 200);
+  });
 };
 
 /**
@@ -126,4 +143,57 @@ const logout = async (req, res) => {
   return jsonResponse(res, { message: 'Cookie eliminada' }, 200);
 };
 
-export { login, logout, refresh };
+/**
+ * @desc    Enviar correo de recuperación de contraseña
+ * @route   POST /auth/recuperar-clave
+ * @access  Public
+ * @param   {string} email
+ * @returns {json} { message: string }
+ * @returns {json} { message: string, error: string }
+ */
+const recuperarClave = async (req, res) => {
+  const { email } = req.body;
+
+  const usuarioEncontrado = await usuarioServices.findUsuarioPorEmail(email);
+
+  if (!usuarioEncontrado) {
+    return jsonResponse(
+      res,
+      {
+        message: 'No hay un usuario registrado con este email',
+      },
+      404,
+    );
+  }
+
+  const token = jwt.sign({ email }, REFRESH_TOKEN_SECRET, {
+    expiresIn: EXPIRATION_TIME.PASSWORD_CHANGE_TOKEN,
+  });
+
+  const url = `https://www.brevo.com.co/recuperarClave/${token}`;
+
+  const mailOptions = {
+    from: NODEMAILER_EMAIL,
+    to: email,
+    subject: 'ADA HEALTH LABS - Recuperación de contraseña',
+    html: `
+      <h1>Recuperación de contraseña</h1>
+      <p>Para cambiar tu contraseña, haz click en el siguiente enlace:</p>
+      <a href="${url}">${url}</a>
+    `,
+  };
+
+  transporter.sendMail(mailOptions, (err) => {
+    if (err) {
+      return jsonResponse(res, { message: 'Error al enviar el correo' }, 500);
+    }
+
+    return jsonResponse(
+      res,
+      { message: 'Correo de recuperación enviado' },
+      200,
+    );
+  });
+};
+
+export { login, logout, recuperarClave, refresh };
