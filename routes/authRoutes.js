@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import {
+  cambiarClave,
   login,
   logout,
   recuperarClave,
@@ -22,5 +23,9 @@ router.route('/logout').post(logout);
 router
   .route('/recuperar-clave')
   .post(validateSchema(schemas.recuperarClaveSchema), recuperarClave);
+
+router
+  .route('/cambiar-clave/:token')
+  .post(validateSchema(schemas.cambiarClaveSchema), cambiarClave);
 
 export default router;
