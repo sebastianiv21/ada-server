@@ -67,8 +67,8 @@ const getMisOrdenesMedicas = async (req, res) => {
   const misOrdenesMedicasResponse = await getPaginatedItems({
     page: Number(page),
     pageSize: Number(pageSize),
-    findItems: services.findResultadosLaboratorio,
-    countItems: services.countResultadosLaboratorio,
+    findItems: services.findOrdenesMedicas,
+    countItems: services.countOrdenesMedicas,
     filter: { paciente: id.toString() },
   });
 
