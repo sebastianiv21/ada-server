@@ -18,6 +18,15 @@ const findOrdenesMedicas = async (skip = 0, limit = 0) => {
   return ordenesMedicas;
 };
 
+const findOrdenMedicaPorId = async (id) => {
+  const ordenMedica = await OrdenMedica.findById(id)
+    .populate('medico paciente tipoPruebaLaboratorio', '-clave')
+    .lean()
+    .exec();
+
+  return ordenMedica;
+};
+
 const findOrdenesMedicasPorIdPaciente = async (id, skip = 0, limit = 0) => {
   const ordenesMedicas = await OrdenMedica.find({ paciente: id })
     // trae la información de los documentos referenciados, excepto la clave de los usuarios
@@ -49,6 +58,7 @@ const deleteOrdenMedica = async (id) => {
 export default {
   createOrdenMedica,
   findOrdenesMedicas,
+  findOrdenMedicaPorId,
   findOrdenesMedicasPorIdPaciente,
   updateOrdenMedica,
   deleteOrdenMedica,

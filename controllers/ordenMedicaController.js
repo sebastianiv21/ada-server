@@ -24,11 +24,36 @@ const getOrdenesMedicas = async (req, res) => {
     return jsonResponse(
       res,
       { message: 'No se encontraron órdenes médicas', ordenesMedicas },
-      200,
+      404,
     );
   }
 
   return jsonResponse(res, { ordenesMedicas }, 200);
+};
+
+/**
+ * @route GET /ordenes-medicas/:id
+ * @desc Trae una orden medica por id
+ * @param {Object} req - Request Object
+ * @param {Object} res - Response Object
+ * @param {String} req.params.id - Id de la orden medica
+ * @return {Object} - Response Object
+ * @access Private
+ */
+const getOrdenMedicaPorId = async (req, res) => {
+  const { id } = req.params;
+
+  const ordenMedica = await services.findOrdenMedicaPorId(id.toString());
+
+  if (!ordenMedica) {
+    return jsonResponse(
+      res,
+      { message: 'No se encontró la orden médica' },
+      404,
+    );
+  }
+
+  return jsonResponse(res, { ordenMedica }, 200);
 };
 
 /**
@@ -53,7 +78,7 @@ const getMisOrdenesMedicas = async (req, res) => {
     return jsonResponse(
       res,
       { message: 'No se encontraron ordenes medicas', ordenesMedicas },
-      200,
+      404,
     );
   }
 
@@ -122,6 +147,7 @@ const deleteOrdenMedica = async (req, res) => {
 
 export default {
   getOrdenesMedicas,
+  getOrdenMedicaPorId,
   getMisOrdenesMedicas,
   createOrdenMedica,
   updateOrdenMedica,

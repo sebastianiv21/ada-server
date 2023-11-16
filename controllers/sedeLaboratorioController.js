@@ -24,7 +24,7 @@ const getSedesLaboratorio = async (req, res) => {
     return jsonResponse(
       res,
       { message: 'No se encontraron sedes de laboratorio', sedesLaboratorio },
-      200,
+      404,
     );
   }
 

@@ -32,7 +32,7 @@ const findAdmin = async () => {
   return admin;
 };
 
-const findUsuarioDuplicado = async (numeroDocumento, email) => {
+const findUsuarioExistente = async (numeroDocumento, email) => {
   // Confirma que el usuario no exista
   // Se usa el método 'exec()' porque estamos pasando un párametro al método 'findOne()'
   const duplicado = await Usuario.findOne({
@@ -80,7 +80,7 @@ const deleteUsuario = async (id) => {
 export default {
   createUsuario,
   findAdmin,
-  findUsuarioDuplicado,
+  findUsuarioExistente,
   findUsuarioPorEmail,
   findUsuarios,
   findUsuarioPorId,
