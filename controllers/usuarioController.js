@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { parseISO } from 'date-fns';
-import { jsonResponse } from '#utils';
+import { getPaginationValues, jsonResponse } from '#utils';
 
 import services from '#services/usuarioServices.js';
 import paramsServices from '#services/paramsServices.js';
@@ -15,7 +15,7 @@ import paramsServices from '#services/paramsServices.js';
  * @return {Object} - Response Object
  */
 const getUsuarios = async (req, res) => {
-  const { skip, limit, numeroDocumento } = req.query;
+  const { page = 1, pageSize = 10, numeroDocumento } = req.query;
 
   // busca un usuario por número de documento si se envía el query param 'numeroDocumento'
   if (numeroDocumento) {
@@ -33,23 +33,29 @@ const getUsuarios = async (req, res) => {
       ); // 404 Not Found
     }
 
-    return jsonResponse(res, { usuario }, 200);
+    return jsonResponse(res, usuario, 200);
   }
 
-  const usuarios = await services.findUsuarios(Number(skip), Number(limit));
+  // Obtener valores de skip y limit
+  const pageNumber = Number(page);
+  const pageSizeNumber = Number(pageSize);
 
-  if (!usuarios?.length) {
-    return jsonResponse(
-      res,
-      {
-        message: 'No se encontraron usuarios',
-        usuarios,
-      },
-      404,
-    );
-  }
+  const { skip, limit } = getPaginationValues(pageNumber, pageSizeNumber);
 
-  return jsonResponse(res, { usuarios }, 200);
+  // Trae los usuarios
+  const usuarios = await services.findUsuarios(skip, limit);
+
+  // cuenta los usuarios
+  const totalUsuarios = await services.countUsuarios();
+
+  const usuariosResponse = {
+    data: usuarios,
+    totalItems: totalUsuarios,
+    totalPages: Math.ceil(totalUsuarios / limit),
+    currentPage: pageNumber,
+  };
+
+  return jsonResponse(res, usuariosResponse, 200);
 };
 
 /**
@@ -68,7 +74,7 @@ const getUsuarioPorId = async (req, res) => {
     return jsonResponse(res, { message: 'Usuario no encontrado' }, 404); // 404 Not Found
   }
 
-  return jsonResponse(res, { usuario }, 200);
+  return jsonResponse(res, usuario, 200);
 };
 
 /**

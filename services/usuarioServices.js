@@ -21,6 +21,12 @@ const findUsuarios = async (skip = 0, limit = 0) => {
   return usuarios;
 };
 
+const countUsuarios = async () => {
+  const totalUsuarios = await Usuario.countDocuments();
+
+  return totalUsuarios;
+};
+
 const findAdmin = async () => {
   const adminRol = await paramsServices.getParamIdPorNombre(
     'Rol',
@@ -83,6 +89,7 @@ export default {
   findUsuarioExistente,
   findUsuarioPorEmail,
   findUsuarios,
+  countUsuarios,
   findUsuarioPorId,
   updateUsuario,
   deleteUsuario,
