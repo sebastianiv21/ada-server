@@ -57,3 +57,38 @@ export const getPaginationValues = (page, pageSize) => {
 
   return { skip, limit: pageSize };
 };
+
+/**
+ * @desc    Obtener items paginados
+ * @param   {Number} page
+ * @param   {Number} pageSize
+ * @param   {Function} findItems
+ * @param   {Function} countItems
+ * @returns {Object}
+ */
+export const getPaginatedItems = async ({
+  page,
+  pageSize,
+  findItems,
+  countItems,
+}) => {
+  const { skip, limit } = getPaginationValues(page, pageSize);
+
+  // Trae los items
+  const items = await findItems(skip, limit);
+
+  // cuenta los items
+  const totalItems = await countItems();
+
+  // calcula el total de páginas
+  const totalPages = Math.ceil(totalItems / limit);
+
+  const currentPage = page;
+
+  return {
+    data: items,
+    totalItems,
+    totalPages,
+    currentPage,
+  };
+};

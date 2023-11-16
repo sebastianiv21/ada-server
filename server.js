@@ -46,7 +46,7 @@ app.use('/parametros', paramsRouter);
 app.use('/lugares', lugaresRouter);
 app.use('/usuarios', usuariosRouter);
 app.use('/ordenes-medicas', ordenesMedicasRouter);
-app.use('/sedes-laboratorios', sedesLaboratoriosRouter);
+app.use('/sedes-laboratorio', sedesLaboratoriosRouter);
 app.use('/citas-laboratorio', citasLaboratorioRouter);
 app.use('/resultados-laboratorio', resultadosLaboratorioRouter);
 
