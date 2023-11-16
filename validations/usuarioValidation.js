@@ -1,4 +1,9 @@
-import { date, number, object, string } from 'yup';
+import { date, number, object, ref, string } from 'yup';
+
+const claveSchema = string()
+  .required('La clave es requerida')
+  .min(6, 'La clave debe tener al menos 6 caracteres')
+  .max(20, 'La clave no puede tener más de 20 caracteres');
 
 const adminSchema = object({
   tipoDocumento: string().required('Seleccione el tipo de documento'),
@@ -15,11 +20,7 @@ const adminSchema = object({
   tipoSangre: string().required('Seleccione el tipo de sangre'),
   rh: string().required('Seleccione el RH'),
   telefono: number().required('El teléfono es requerido'),
-  clave: string()
-    .required('La clave es requerida')
-    .min(6, 'La clave debe tener al menos 6 caracteres')
-    .max(20, 'La clave no puede tener más de 20 caracteres')
-    .trim(),
+  clave: claveSchema,
   email: string()
     .email('Ingrese un email válido')
     .required('El email es requerido'),
@@ -47,11 +48,14 @@ const recuperarClaveSchema = object({
 });
 
 const loginSchema = recuperarClaveSchema.shape({
-  clave: string()
-    .required('La clave es requerida')
-    .min(6, 'La clave debe tener al menos 6 caracteres')
-    .max(20, 'La clave no puede tener más de 20 caracteres')
-    .trim(),
+  clave: claveSchema,
+});
+
+const cambiarClaveSchema = object({
+  clave: claveSchema,
+  confirmarClave: string()
+    .required('La confirmación de la clave es requerida')
+    .oneOf([ref('clave')], 'Las contraseñas no coinciden'),
 });
 
 export default {
@@ -59,4 +63,5 @@ export default {
   usuarioSchema,
   loginSchema,
   recuperarClaveSchema,
+  cambiarClaveSchema,
 };

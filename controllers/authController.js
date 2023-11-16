@@ -1,4 +1,4 @@
-import { compare } from 'bcrypt';
+import { compare, hash } from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import usuarioServices from '#services/usuarioServices.js';
 import resetTokenServices from '#services/resetTokenServices.js';
@@ -9,7 +9,6 @@ const {
   ACCESS_TOKEN_SECRET,
   REFRESH_TOKEN_SECRET,
   PASSWORD_CHANGE_TOKEN_SECRET,
-  NODEMAILER_EMAIL,
   PORT,
 } = process.env;
 
@@ -91,7 +90,7 @@ const refresh = async (req, res) => {
     if (err) return jsonResponse(res, { message: 'No autorizado' }, 403);
 
     const usuarioEncontrado = await usuarioServices.findUsuarioPorEmail(
-      decoded.email,
+      decoded.email.toString(),
     );
 
     if (!usuarioEncontrado) {
@@ -176,7 +175,7 @@ const recuperarClave = async (req, res) => {
   // Enviar correo
   const dominio = PORT ? `localhost:${PORT}` : 'adahealthlabs.com';
 
-  const url = `https://${dominio}/recuperar-clave/${token}`;
+  const url = `https://${dominio}/cambiar-clave/${token}`;
 
   const emailMessage = `
     <h1>Recuperación de contraseña</h1>
@@ -206,4 +205,80 @@ const recuperarClave = async (req, res) => {
   return jsonResponse(res, { message: 'Correo de recuperación enviado' }, 200);
 };
 
-export { login, logout, recuperarClave, refresh };
+/**
+ * @desc    Cambiar contraseña
+ * @route   POST /auth/cambiar-clave/:token
+ * @access  Public
+ * @param   {string} token
+ * @returns {json} { message: string }
+ */
+const cambiarClave = async (req, res) => {
+  const { token } = req.params;
+  const { clave } = req.body;
+
+  const resetTokenEncontrado = await resetTokenServices.findResetToken(token);
+
+  if (!resetTokenEncontrado) {
+    return jsonResponse(
+      res,
+      {
+        message: 'Token inválido',
+      },
+      400,
+    );
+  }
+
+  const { usuario } = resetTokenEncontrado;
+
+  const usuarioEncontrado = await usuarioServices.findUsuarioPorId(
+    usuario.toString(),
+  );
+
+  if (!usuarioEncontrado) {
+    return jsonResponse(
+      res,
+      {
+        message: 'Token inválido',
+      },
+      400,
+    );
+  }
+
+  // verifica que el token sea valido
+  jwt.verify(
+    token,
+    PASSWORD_CHANGE_TOKEN_SECRET,
+    { ignoreExpiration: false },
+    async (err, decoded) => {
+      if (err) return jsonResponse(res, { message: 'Token inválido' }, 400);
+
+      const usuarioToken = await usuarioServices.findUsuarioPorId(
+        decoded.idUsuario.toString(),
+      );
+
+      // verifica que el token pertenezca al usuario
+      if (usuarioToken._id.toString() !== usuarioEncontrado._id.toString()) {
+        return jsonResponse(res, { message: 'Token inválido' }, 400);
+      }
+
+      // Cifra la contraseña
+      const claveCifrada = await hash(clave, 10); // salt rounds
+
+      // Actualiza la contraseña
+      const idUsuario = usuarioEncontrado._id.toString();
+
+      await usuarioServices.updateUsuario(idUsuario, {
+        clave: claveCifrada,
+      });
+
+      // Elimina el token de la base de datos
+      const idToken = resetTokenEncontrado._id.toString();
+
+      await resetTokenServices.deleteResetToken(idToken);
+
+      return jsonResponse(res, { message: 'Contraseña cambiada' }, 200);
+    },
+  );
+};
+
+export { cambiarClave, login, logout, recuperarClave, refresh };
