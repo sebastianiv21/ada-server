@@ -12,6 +12,7 @@ const {
   PASSWORD_CHANGE_TOKEN_SECRET,
   NODEMAILER_EMAIL,
   NODEMAILER_API_KEY,
+  PORT,
 } = process.env;
 
 // nodemailer transporter
@@ -185,7 +186,10 @@ const recuperarClave = async (req, res) => {
 
   await resetTokenServices.createResetToken(nuevoResetToken);
 
-  const url = `https://www.brevo.com.co/recuperarClave/${token}`;
+  // Enviar correo
+  const dominio = PORT ? `localhost:${PORT}` : 'adahealthlabs.com';
+
+  const url = `https://${dominio}/recuperar-clave/${token}`;
 
   const mailOptions = {
     from: NODEMAILER_EMAIL,
