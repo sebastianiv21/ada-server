@@ -1,11 +1,18 @@
 import { date, number, object, ref, string } from 'yup';
 
 const claveSchema = string()
-  .required('La clave es requerida')
-  .min(6, 'La clave debe tener al menos 6 caracteres')
-  .max(20, 'La clave no puede tener más de 20 caracteres');
+  .required('La contraseña es requerida')
+  .min(6, 'La contraseña debe tener al menos 6 caracteres')
+  .max(20, 'La contraseña no puede tener más de 20 caracteres');
 
-const adminSchema = object({
+const cambiarClaveSchema = object({
+  clave: claveSchema,
+  confirmarClave: string()
+    .required('La confirmación de la contraseña es requerida')
+    .oneOf([ref('clave')], 'Las contraseñas no coinciden'),
+});
+
+const adminSchema = cambiarClaveSchema.shape({
   tipoDocumento: string().required('Seleccione el tipo de documento'),
   numeroDocumento: string().required('Ingrese su número de documento'),
   nombres: string().required('Ingrese su nombre'),
@@ -20,10 +27,9 @@ const adminSchema = object({
   tipoSangre: string().required('Seleccione el tipo de sangre'),
   rh: string().required('Seleccione el RH'),
   telefono: number().required('El teléfono es requerido'),
-  clave: claveSchema,
   email: string()
-    .email('Ingrese un email válido')
-    .required('El email es requerido'),
+    .email('Ingrese un correo electrónico válido')
+    .required('El correo electrónico es requerido'),
 });
 
 const usuarioSchema = adminSchema.shape({
@@ -43,19 +49,12 @@ const usuarioSchema = adminSchema.shape({
 
 const recuperarClaveSchema = object({
   email: string()
-    .email('Ingrese un email válido')
-    .required('El email es requerido'),
+    .email('Ingrese un correo electrónico válido')
+    .required('El correo electrónico es requerido'),
 });
 
 const loginSchema = recuperarClaveSchema.shape({
   clave: claveSchema,
-});
-
-const cambiarClaveSchema = object({
-  clave: claveSchema,
-  confirmarClave: string()
-    .required('La confirmación de la clave es requerida')
-    .oneOf([ref('clave')], 'Las contraseñas no coinciden'),
 });
 
 export default {
