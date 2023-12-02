@@ -8,12 +8,12 @@ import services from '#services/paramsServices.js';
  * @returns {Object} Response
  */
 const getParams = async (req, res) => {
-  const { skip, limit, parametrosQuery } = req.query;
+  const { skip, limit, lista } = req.query;
 
-  const arrayParametros = parametrosQuery.split(',');
+  const arrayParametros = lista.split(',');
 
   // valida que los parametros sean validos
-  if (!parametrosQuery || !Array.isArray(arrayParametros)) {
+  if (!lista || !Array.isArray(arrayParametros)) {
     return jsonResponse(res, { message: 'Parámetros no válidos' }, 400);
   }
 

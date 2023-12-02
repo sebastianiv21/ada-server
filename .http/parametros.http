@@ -1,5 +1,5 @@
 # Retorna todos los parametros pedidos
-GET {{URL}}/parametros?parametrosQuery=Rol,EstadoCitaLaboratorio
+GET {{URL}}/parametros?lista=Rol,EstadoCitaLaboratorio
 Accept: application/json
 
 # Retorna el id del valor de un parametro especifico por nombre
