@@ -42,6 +42,7 @@ Content-Type: application/json
     "rh": "6546d78fe7c0410f3f1f366f",
     "telefono": 3120123456,
     "clave": "adahealth1234",
+    "confirmarClave": "adahealth1234",
     "email": "luisibarra@gmail.com"
 }
 
