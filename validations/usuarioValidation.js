@@ -22,7 +22,8 @@ const adminSchema = cambiarClaveSchema.shape({
       new Date(),
       'La fecha de nacimiento no puede ser mayor a la fecha actual',
     )
-    .required('Ingrese su fecha de nacimiento'),
+    .required('Ingrese su fecha de nacimiento')
+    .typeError('Ingrese una fecha válida'),
   genero: string().required('Seleccione el género'),
   tipoSangre: string().required('Seleccione el tipo de sangre'),
   rh: string().required('Seleccione el RH'),
