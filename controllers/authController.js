@@ -33,7 +33,13 @@ const login = async (req, res) => {
   );
 
   if (!usuarioEncontrado) {
-    return jsonResponse(res, { message: 'No se encuentra registrado' }, 401); // 401 Unauthorized
+    return jsonResponse(
+      res,
+      {
+        message: 'No hay un usuario registrado con este correo electrónico',
+      },
+      401,
+    ); // 401 Unauthorized
   }
 
   if (!usuarioEncontrado?.activo) {
@@ -163,7 +169,7 @@ const recuperarClave = async (req, res) => {
     return jsonResponse(
       res,
       {
-        message: 'No hay un usuario registrado con este email',
+        message: 'No hay un usuario registrado con este correo electrónico',
       },
       404,
     );
