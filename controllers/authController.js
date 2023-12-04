@@ -68,7 +68,15 @@ const login = async (req, res) => {
   });
 
   // envia accessToken
-  return jsonResponse(res, { accessToken }, 200);
+  return jsonResponse(
+    res,
+    {
+      accessToken,
+      rol: usuarioEncontrado.rol,
+      idUsuario: usuarioEncontrado._id,
+    },
+    200,
+  );
 };
 
 /**

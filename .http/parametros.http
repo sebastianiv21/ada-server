@@ -1,5 +1,7 @@
 # Retorna todos los parametros pedidos
-GET {{URL}}/parametros?lista=Rol,EstadoCitaLaboratorio,Genero,EstadoCivil,TipoSangre,TipoDocumento,Rh,Eps,TipoPruebaLaboratorio
+# GET {{URL}}/parametros?lista=Rol,EstadoCitaLaboratorio,Genero,EstadoCivil,TipoSangre,TipoDocumento,Rh,Eps,TipoPruebaLaboratorio
+# Accept: application/json
+GET {{URL}}/parametros?lista=TipoDocumento
 Accept: application/json
 
 # Retorna el id del valor de un parametro especifico por nombre
