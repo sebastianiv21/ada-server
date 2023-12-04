@@ -143,7 +143,7 @@ const logout = async (req, res) => {
 
   res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
 
-  return jsonResponse(res, { message: 'Cookie eliminada' }, 200);
+  return jsonResponse(res, { message: 'Sesión finalizada' }, 200);
 };
 
 /**
