@@ -32,13 +32,19 @@ const login = async (req, res) => {
     email.toString(),
   );
 
+  if (!usuarioEncontrado) {
+    return jsonResponse(res, { message: 'No se encuentra registrado' }, 401); // 401 Unauthorized
+  }
+
   if (!usuarioEncontrado?.activo) {
     return jsonResponse(res, { message: 'No autorizado' }, 401); // 401 Unauthorized
   }
 
   const match = await compare(clave, usuarioEncontrado.clave);
 
-  if (!match) return jsonResponse(res, { message: 'No autorizado' }, 401);
+  if (!match) {
+    return jsonResponse(res, { message: 'Contraseña incorrecta' }, 401);
+  }
 
   // Generar tokens
   const accessToken = jwt.sign(
