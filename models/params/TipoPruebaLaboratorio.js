@@ -7,8 +7,7 @@ const tipoPruebaLaboratorioSchema = new Schema({
     unique: true,
   },
   observaciones: String,
-  valorMinimo: Number,
-  valorMaximo: Number,
+  valorReferencia: String,
   unidad: String,
 });
 
