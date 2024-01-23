@@ -196,13 +196,13 @@ const recuperarClave = async (req, res) => {
   const url = `${APP_URL}/cambiar-clave/${token}`;
 
   const emailMessage = `
-    <h1>Recuperación de contraseña</h1>
+    <h1>Cambio de contraseña</h1>
     <p>Para cambiar tu contraseña, haz click <a href="${url}">aquí</a></p>
   `;
 
   const emailConfig = {
     to: email,
-    subject: 'Recuperación de contraseña',
+    subject: 'Cambio de contraseña',
     message: emailMessage,
   };
 
