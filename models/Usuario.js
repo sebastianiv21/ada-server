@@ -51,10 +51,10 @@ const usuarioSchema = new Schema(
     },
     // Datos de localizacion
     telefono: {
-      type: Number,
+      type: String,
       required: true,
     },
-    telefono2: Number,
+    telefono2: String,
     direccion: String,
     municipio: {
       type: Schema.Types.ObjectId,
@@ -85,7 +85,7 @@ const usuarioSchema = new Schema(
       nombres: String,
       apellidos: String,
       parentesco: String,
-      telefono: Number,
+      telefono: String,
     },
   },
   {

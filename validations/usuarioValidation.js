@@ -1,5 +1,7 @@
 import { date, number, object, ref, string } from 'yup';
 
+const REGEX_TELEFONO = /^(\+\d{1,3}-?)?\d{1,14}$/;
+
 const claveSchema = string()
   .required('La contraseña es requerida')
   .min(6, 'La contraseña debe tener al menos 6 caracteres')
@@ -27,9 +29,9 @@ const adminSchema = cambiarClaveSchema.shape({
   genero: string().required('Seleccione el género'),
   tipoSangre: string().required('Seleccione el tipo de sangre'),
   rh: string().required('Seleccione el RH'),
-  telefono: number()
+  telefono: string()
     .required('El teléfono es requerido')
-    .typeError('Ingrese un teléfono válido'),
+    .matches(REGEX_TELEFONO, 'Ingrese un teléfono válido'),
   email: string()
     .email('Ingrese un correo electrónico válido')
     .required('El correo electrónico es requerido'),
@@ -39,14 +41,14 @@ const usuarioSchema = adminSchema.shape({
   rol: string().required('Seleccione el rol'),
   estadoCivil: string(),
   eps: string(),
-  telefono2: number().typeError('Ingrese un teléfono válido'),
+  telefono2: string().matches(REGEX_TELEFONO, 'Ingrese un teléfono válido'),
   direccion: string(),
   municipio: string(),
   contacto: object({
     nombres: string(),
     apellidos: string(),
     parentesco: string(),
-    telefono: number().typeError('Ingrese un teléfono válido'),
+    telefono: string().matches(REGEX_TELEFONO, 'Ingrese un teléfono válido'),
   }),
 });
 
