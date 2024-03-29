@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import 'dotenv/config';
 
 // variables de entorno
 const { NODEMAILER_EMAIL, NODEMAILER_API_KEY } = process.env;
@@ -10,7 +11,8 @@ const { NODEMAILER_EMAIL, NODEMAILER_API_KEY } = process.env;
  * @param   {Number} code
  * @returns {Object}
  */
-export const jsonResponse = (res, json, code = 500) => res.status(code).json(json);
+export const jsonResponse = (res, json, code = 500) =>
+  res.status(code).json(json);
 
 /**
  * @desc    Enviar email

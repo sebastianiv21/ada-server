@@ -9,6 +9,7 @@ import corsOptions from '#config/corsOptions.js';
 import { logEvents, logger } from '#middlewares/logger.js';
 import errorHandler from '#middlewares/errorHandler.js';
 import connectDB from '#config/dbConn.js';
+import 'dotenv/config';
 
 // ROUTERS
 import rootRouter from '#routes/root.js';

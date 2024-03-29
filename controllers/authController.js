@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import usuarioServices from '#services/usuarioServices.js';
 import resetTokenServices from '#services/resetTokenServices.js';
 import { jsonResponse, sendEmail } from '#utils';
+import 'dotenv/config';
 
 // variables de entorno
 const {
