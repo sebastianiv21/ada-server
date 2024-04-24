@@ -1,5 +1,5 @@
 # Trae todos los usuarios
-GET {{URL}}/usuarios?skip=0&limit=0
+GET {{URL}}/usuarios?page=2&pageSize=10
 Accept: application/json
 Authorization: Bearer {{accessToken}}
 
@@ -12,17 +12,18 @@ Authorization: Bearer {{accessToken}}
 
 {
     "tipoDocumento": "6546d8dfe7c0410f3f1f367d",
-    "numeroDocumento": "1324563543",
-    "nombres": "Carolina",
-    "apellidos": "Gutierrez",
+    "numeroDocumento": "717124841",
+    "nombres": "Ashlee",
+    "apellidos": "Daugherty",
     "fechaNacimiento": "1995-10-12",
-    "genero": "6546d753e7c0410f3f1f366c",
+    "genero": "6546d753e7c0410f3f1f366b",
     "tipoSangre": "6546d7cde7c0410f3f1f3671",
-    "rol": "65465c6fe7c0410f3f1f3660",
+    "rol": "65465c9ce7c0410f3f1f3662",
     "rh": "6546d76de7c0410f3f1f366e",
     "telefono": 3215357453,
     "clave": "adahealth1234",
-    "email": "caroguti@gmail.com"
+    "confirmarClave": "adahealth1234",
+    "email": "Brody.Wiegand98@gmail.com"
 }
 
 ###

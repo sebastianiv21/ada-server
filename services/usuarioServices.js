@@ -9,12 +9,10 @@ const createUsuario = async (usuario) => {
 
 const findUsuarios = async (skip = 0, limit = 0, filter = {}) => {
   const usuarios = await Usuario.find(filter)
-    .select('-clave')
+    .select('numeroDocumento nombres apellidos rol activo')
     .skip(skip)
     .limit(limit)
-    .populate(
-      'tipoDocumento genero tipoSangre rh estadoCivil eps rol municipio contacto',
-    )
+    .populate('rol')
     .lean()
     .exec();
 

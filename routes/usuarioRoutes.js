@@ -13,7 +13,7 @@ router.post(
 );
 
 // Rutas para usuarios autenticados
-router.use(verifyJWT);
+// router.use(verifyJWT);
 
 router.route('/').get(controller.getUsuarios);
 
